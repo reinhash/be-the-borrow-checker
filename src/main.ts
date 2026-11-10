@@ -1,7 +1,7 @@
 import "./style.css";
 import verifiedJson from "./verified.json";
 import { CHAPTERS } from "./questions";
-import { COMPILE_ERROR, PANIC, hash, outcome, patch, type Chapter, type Question, type Result, type Verified } from "./types";
+import { COMPILE_ERROR, PANIC, key, outcome, patch, type Chapter, type Question, type Result, type Verified } from "./types";
 import { escapeHtml, highlight, prose } from "./highlight";
 import { confetti, shake } from "./fx";
 import * as sound from "./sound";
@@ -11,8 +11,8 @@ const HEARTS = 3;
 const app = document.getElementById("app")!;
 
 /** What rustc said about this exact source. scripts/verify.ts guarantees there is an entry. */
-function rustc(source: string): Result {
-  const r = VERIFIED.results[hash(source)];
+function rustc(source: string, test = false): Result {
+  const r = VERIFIED.results[key(source, test)];
   if (!r) throw new Error("No verified result for this program. Run npm run verify.");
   return r;
 }
@@ -162,7 +162,7 @@ function answerVerdict(said: "accept" | "reject"): void {
   if (screen.name !== "play" || screen.turn.phase !== "ask") return;
   const { run, turn } = screen;
   if (turn.q.kind !== "verdict") return;
-  const compiles = rustc(turn.q.code).ok;
+  const compiles = rustc(turn.q.code, turn.q.test).ok;
   const right = (said === "accept") === compiles;
   turn.said = said;
   sound.stamp();
@@ -374,8 +374,8 @@ function codeHtml(view: CodeView): string {
 /** First line of rustc's output, e.g. "error[E0382]: borrow of moved value: `a`". */
 const headline = (r: Result) => r.rendered?.split("\n")[0] ?? "";
 
-function terminal(r: Result): string {
-  const cmd = `<span class="term-prompt">$</span> rustc --edition ${VERIFIED.edition} src/main.rs${r.ok ? " &amp;&amp; ./main" : ""}`;
+function terminal(r: Result, test = false): string {
+  const cmd = `<span class="term-prompt">$</span> rustc --edition ${VERIFIED.edition} ${test ? "--test src/lib.rs" : "src/main.rs"}${r.ok ? " &amp;&amp; ./main" : ""}`;
   let body: string;
   if (!r.ok) {
     const n = r.errors.length;
@@ -387,10 +387,16 @@ function terminal(r: Result): string {
   }
   return `<pre class="term"><code>${cmd}\n${body
     .replace(/^(error(\[E\d+\])?)(?=:)/gm, '<span class="t-err">$1</span>')
-    .replace(/^(warning|help|note)(?=:)/gm, '<span class="t-note">$1</span>')}</code></pre>`;
+    .replace(/^(warning|help|note)(?=:)/gm, '<span class="t-note">$1</span>')
+    .replace(/^(test .* \.\.\. |test result: )(ok|FAILED)/gm, (_, lead, word) => `${lead}<span class="${word === "ok" ? "t-ok" : "t-err"}">${word}</span>`)}</code></pre>`;
 }
 
 function promptFor(q: Question): string {
+  if (q.test) {
+    if (q.kind === "verdict") return "Does this compile under <code>cargo test</code>?";
+    if (q.kind === "output") return "What does <code>cargo test</code> report?";
+    return `rustc rejects this. Which version of line ${q.line} makes <code>cargo test</code> report <code>${escapeHtml(q.goal)}</code>?`;
+  }
   if (q.kind === "verdict") return "Does this compile?";
   if (q.kind === "output") return "What does it print?";
   return `rustc rejects this. Which version of line ${q.line} compiles and prints <code>${escapeHtml(q.goal)}</code>?`;
@@ -398,7 +404,7 @@ function promptFor(q: Question): string {
 
 function renderPlay(run: Run, turn: Turn): string {
   const q = turn.q;
-  const r = rustc(q.code);
+  const r = rustc(q.code, q.test);
   const m = multiplier(run.streak);
 
   const hearts = Array.from({ length: HEARTS }, (_, i) => `<span class="heart${i < run.hearts ? "" : " lost"}">${HEART}</span>`).join("");
@@ -423,7 +429,7 @@ function renderPlay(run: Run, turn: Turn): string {
     view = { code: q.code, target: q.line };
     if (turn.phase === "reveal") {
       if (turn.viewing >= 0) {
-        const pr = rustc(patch(q.code, q.line, q.choices[turn.viewing]));
+        const pr = rustc(patch(q.code, q.line, q.choices[turn.viewing]), q.test);
         view.replacement = { text: q.choices[turn.viewing], ok: outcome(pr) === q.goal };
       } else {
         view = { code: q.code, errorLine: r.line, errorNote: headline(r), errorTone: "why" };
@@ -474,13 +480,13 @@ function renderPlay(run: Run, turn: Turn): string {
       tabs = `<div class="tabs" role="tablist" aria-label="See what rustc says about each version">${all
         .map((c) => {
           const label = c < 0 ? "As written" : `Choice ${turn.order.indexOf(c) + 1}`;
-          const res = c < 0 ? r : rustc(patch(q.code, q.line, q.choices[c]));
+          const res = c < 0 ? r : rustc(patch(q.code, q.line, q.choices[c]), q.test);
           const mark = c < 0 ? "" : outcome(res) === q.goal ? " ✓" : " ✗";
           return `<button type="button" role="tab" aria-selected="${c === turn.viewing}" class="tab${c === q.answer ? " is-answer" : ""}" data-act="view" data-choice="${c}">${label}${mark}${c === turn.picked ? " · yours" : ""}</button>`;
         })
         .join("")}</div>`;
       if (turn.viewing >= 0) {
-        shown = rustc(patch(q.code, q.line, q.choices[turn.viewing]));
+        shown = rustc(patch(q.code, q.line, q.choices[turn.viewing]), q.test);
       }
     }
 
@@ -504,7 +510,7 @@ function renderPlay(run: Run, turn: Turn): string {
       <details class="rustc-out"${folded ? "" : " open"}>
         <summary class="out-label">What rustc actually said</summary>
         ${tabs}
-        ${terminal(shown)}
+        ${terminal(shown, q.test)}
       </details>
       <button type="button" class="next" data-act="next">${last ? "See results" : "Next question"} <kbd>↵</kbd></button>
     </section>`;

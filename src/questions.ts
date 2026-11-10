@@ -1546,9 +1546,9 @@ const collections: Chapter = {
 const errors: Chapter = {
   id: "errors",
   number: "07",
-  book: "Book ch. 9, 11",
+  book: "Book ch. 9",
   name: "When things go wrong",
-  blurb: "panic!, Result and the ? operator, plus the asserts that tests are made of.",
+  blurb: "panic!, Option, Result and the ? operator that passes errors up.",
   questions: [
     {
       id: "unwrap-none",
@@ -1702,7 +1702,18 @@ const errors: Chapter = {
       expect: { ok: false, error: "E0271", line: 5 },
       explain:
         "This function can only return a `ParseIntError`. Parsing an `f64` fails with a different type, `ParseFloatError`, and nothing converts one into the other. The first `?` is fine, the second is not."
-    },
+    }
+
+  ]
+};
+
+const testing: Chapter = {
+  id: "testing",
+  number: "08",
+  book: "Book ch. 11",
+  name: "Does the test pass?",
+  blurb: "Asserts, #[test] functions and what cargo test reports.",
+  questions: [
     {
       id: "assert-eq-fails",
       kind: "output",
@@ -1739,6 +1750,205 @@ const errors: Chapter = {
         "`==` is not built in for your own types. It comes from the `PartialEq` trait, which `#[derive(PartialEq)]` writes for you. `assert_eq!` in a test needs it too, plus `Debug`, because it prints both values when they differ."
     },
     {
+      id: "test-pass-and-fail",
+      kind: "output",
+      test: true,
+      topic: "Passing and failing",
+      code: rs`
+        fn add(a: i32, b: i32) -> i32 {
+            a + b
+        }
+
+        #[test]
+        fn adds() {
+            assert_eq!(add(2, 2), 4);
+        }
+
+        #[test]
+        fn adds_wrong() {
+            assert_eq!(add(2, 2), 5);
+        }
+      `,
+      choices: ["1 passed, 1 failed", "2 passed, 0 failed", "0 passed, 2 failed", COMPILE_ERROR],
+      answer: 0,
+      explain:
+        "`cargo test` runs every function marked `#[test]`, each one on its own. A test passes when it returns normally and fails when it panics. One failing test doesn't stop the others, so `adds` still passes next to `adds_wrong`."
+    },
+    {
+      id: "test-module-private",
+      kind: "verdict",
+      test: true,
+      topic: "The tests module",
+      code: rs`
+        fn double(x: i32) -> i32 {
+            x * 2
+        }
+
+        #[cfg(test)]
+        mod tests {
+            use super::*;
+
+            #[test]
+            fn doubles() {
+                assert_eq!(double(2), 4);
+            }
+        }
+      `,
+      expect: { ok: true },
+      explain:
+        "Tests usually live in a module named `tests` inside the file they test. `use super::*;` imports everything from the module above. `double` is private, but a module may use the private items of the modules that contain it, so tests can reach it."
+    },
+    {
+      id: "test-module-no-use",
+      kind: "verdict",
+      test: true,
+      topic: "The tests module",
+      code: rs`
+        fn double(x: i32) -> i32 {
+            x * 2
+        }
+
+        #[cfg(test)]
+        mod tests {
+            #[test]
+            fn doubles() {
+                assert_eq!(double(2), 4);
+            }
+        }
+      `,
+      expect: { ok: false, error: "E0425", line: 9 },
+      explain:
+        "`mod tests` is a module of its own, and names from the outer module are not visible in it automatically. Without `use super::*;` the test has to call `super::double(2)`."
+    },
+    {
+      id: "should-panic",
+      kind: "output",
+      test: true,
+      topic: "#[should_panic]",
+      code: rs`
+        fn divide(a: i32, b: i32) -> i32 {
+            if b == 0 {
+                panic!("divide by zero");
+            }
+            a / b
+        }
+
+        #[test]
+        #[should_panic]
+        fn by_zero() {
+            divide(1, 0);
+        }
+
+        #[test]
+        #[should_panic]
+        fn by_two() {
+            divide(4, 2);
+        }
+      `,
+      choices: ["1 passed, 1 failed", "2 passed, 0 failed", "0 passed, 2 failed", COMPILE_ERROR],
+      answer: 0,
+      explain:
+        "`#[should_panic]` turns the rule around: the test passes when its body panics and fails when it doesn't. Use it to check that bad input is refused. `by_zero` panics as it should. `by_two` runs to the end without a panic, and that counts as a failure."
+    },
+    {
+      id: "should-panic-expected",
+      kind: "output",
+      test: true,
+      topic: "#[should_panic]",
+      code: rs`
+        fn check(n: i32) {
+            if n < 1 {
+                panic!("must be at least 1");
+            }
+            if n > 100 {
+                panic!("must be at most 100");
+            }
+        }
+
+        #[test]
+        #[should_panic(expected = "at least 1")]
+        fn too_big() {
+            check(200);
+        }
+      `,
+      choices: ["0 passed, 1 failed", "1 passed, 0 failed", COMPILE_ERROR],
+      answer: 0,
+      explain:
+        "A bare `#[should_panic]` is happy with any panic, even one caused by an unrelated bug. `expected = \"...\"` also requires the panic message to contain that text. `check(200)` does panic, but with the other message, so the test fails."
+    },
+    {
+      id: "test-returns-result",
+      kind: "output",
+      test: true,
+      topic: "Tests that return Result",
+      code: rs`
+        use std::num::ParseIntError;
+
+        #[test]
+        fn plain() -> Result<(), ParseIntError> {
+            let n: i32 = "42".parse()?;
+            assert_eq!(n, 42);
+            Ok(())
+        }
+
+        #[test]
+        fn with_unit() -> Result<(), ParseIntError> {
+            let n: i32 = "42px".parse()?;
+            assert_eq!(n, 42);
+            Ok(())
+        }
+      `,
+      choices: ["1 passed, 1 failed", "2 passed, 0 failed", "0 passed, 2 failed", COMPILE_ERROR],
+      answer: 0,
+      explain:
+        "A test may return a `Result`. It passes on `Ok` and fails on `Err`, which lets the body use `?` in place of `unwrap`. `\"42px\"` is not a number, so `?` returns the error and `with_unit` fails without reaching its assertion."
+    },
+    {
+      id: "test-ignore",
+      kind: "output",
+      test: true,
+      topic: "#[ignore]",
+      code: rs`
+        #[test]
+        fn quick() {
+            assert_eq!(2 + 2, 4);
+        }
+
+        #[test]
+        #[ignore]
+        fn slow() {
+            panic!("takes an hour");
+        }
+      `,
+      choices: [
+        "1 passed, 0 failed, 1 ignored",
+        "1 passed, 1 failed",
+        "2 passed, 0 failed",
+        COMPILE_ERROR
+      ],
+      answer: 0,
+      explain:
+        "`#[ignore]` keeps a test in the code but skips it in a normal `cargo test`, which is useful for slow tests. It is counted as ignored, not as passed or failed. `cargo test -- --ignored` runs only the ignored ones."
+    },
+    {
+      id: "cfg-test-only",
+      kind: "verdict",
+      topic: "#[cfg(test)]",
+      code: rs`
+        #[cfg(test)]
+        fn helper() -> i32 {
+            4
+        }
+
+        fn main() {
+            println!("{}", helper());
+        }
+      `,
+      expect: { ok: false, error: "E0425", line: 7 },
+      explain:
+        "`#[cfg(test)]` means \"compile this only when building tests\". In a normal build `helper` does not exist, so `main` can't call it. Test modules carry this attribute so that test code stays out of the finished program."
+    },
+    {
       id: "test-fn-not-built",
       kind: "output",
       topic: "#[test]",
@@ -1762,29 +1972,35 @@ const errors: Chapter = {
         "A function marked `#[test]` is only compiled and run by `cargo test`. In a normal build it is left out completely, so its wrong assertion can't fail here. `cargo test` would report `adds` as failed."
     },
     {
-      id: "cfg-test-only",
-      kind: "verdict",
-      topic: "#[cfg(test)]",
+      id: "test-fn-under-test",
+      kind: "output",
+      test: true,
+      topic: "#[test]",
       code: rs`
-        #[cfg(test)]
-        fn helper() -> i32 {
-            4
+        fn add(a: i32, b: i32) -> i32 {
+            a + b
+        }
+
+        #[test]
+        fn adds() {
+            assert_eq!(add(2, 2), 5);
         }
 
         fn main() {
-            println!("{}", helper());
+            println!("{}", add(2, 2));
         }
       `,
-      expect: { ok: false, error: "E0425", line: 7 },
+      choices: ["0 passed, 1 failed", "1 passed, 0 failed", "4", COMPILE_ERROR],
+      answer: 0,
       explain:
-        "`#[cfg(test)]` means \"compile this only when building tests\". In a normal build `helper` does not exist, so `main` can't call it. Test modules carry this attribute so that test code stays out of the finished program."
+        "Run normally, this program prints `4` and the test is left out. Built by `cargo test`, the test function is compiled and its wrong assertion fails. `main` is not run at all: in a test build, the test runner takes its place."
     }
   ]
 };
 
 const lifetimes: Chapter = {
   id: "lifetimes",
-  number: "08",
+  number: "09",
   book: "Book ch. 10",
   name: "How long is 'a?",
   blurb: "Dangling references, lifetimes Rust fills in for you, and the ones you have to write.",
@@ -2082,7 +2298,7 @@ const lifetimes: Chapter = {
 
 const structs: Chapter = {
   id: "structs",
-  number: "09",
+  number: "10",
   book: "Book ch. 10",
   name: "Structs that borrow",
   blurb: "Lifetimes on structs, on impl blocks, and on the methods inside them.",
@@ -2444,7 +2660,7 @@ const structs: Chapter = {
 
 const traits: Chapter = {
   id: "traits",
-  number: "10",
+  number: "11",
   book: "Book ch. 10, 18",
   name: "What can it do?",
   blurb: "Generics and traits: shared behaviour, bounds, and dyn for mixing types.",
@@ -3060,7 +3276,7 @@ const traits: Chapter = {
 
 const closures: Chapter = {
   id: "closures",
-  number: "11",
+  number: "12",
   book: "Book ch. 12, 13",
   name: "Closures and iterators",
   blurb: "Functions that capture their surroundings, and lazy chains over sequences.",
@@ -3260,7 +3476,7 @@ const closures: Chapter = {
 
 const pointers: Chapter = {
   id: "pointers",
-  number: "12",
+  number: "13",
   book: "Book ch. 15",
   name: "Smart pointers",
   blurb: "Box, Rc, RefCell and Weak: owning data on the heap, alone or shared.",
@@ -3496,7 +3712,7 @@ const pointers: Chapter = {
 
 const concurrency: Chapter = {
   id: "concurrency",
-  number: "13",
+  number: "14",
   book: "Book ch. 16, 17, 21",
   name: "Threads and futures",
   blurb: "Sharing data between threads, channels, and async code that waits.",
@@ -3734,7 +3950,7 @@ const concurrency: Chapter = {
 
 const advanced: Chapter = {
   id: "advanced",
-  number: "14",
+  number: "15",
   book: "Book ch. 18, 20",
   name: "Advanced features",
   blurb: "unsafe, trait tricks, function pointers, macros and the never type.",
@@ -4092,7 +4308,7 @@ const advanced: Chapter = {
 
 const gauntlet: Chapter = {
   id: "gauntlet",
-  number: "15",
+  number: "16",
   book: "All chapters",
   name: "The gauntlet",
   blurb: "A last mixed round, plus a few surprises from every earlier chapter.",
@@ -4297,6 +4513,7 @@ export const CHAPTERS: Chapter[] = [
   modules,
   collections,
   errors,
+  testing,
   lifetimes,
   structs,
   traits,

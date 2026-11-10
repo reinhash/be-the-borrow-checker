@@ -1,7 +1,9 @@
 // Compiles every program in the quiz with the local rustc, runs the ones that
 // compile, and checks every claim a question makes: whether it compiles, the
 // first error's code and line, the printed output, and that a fix question
-// has exactly one choice that compiles and prints its goal. Writes what rustc
+// has exactly one choice that compiles and prints its goal. Questions marked
+// `test` are built with `rustc --test` and their tests are run, as `cargo test`
+// would; their outcome is how many tests passed and failed. Writes what rustc
 // said to src/verified.json, which the game shows after each answer.
 import { execFile } from "node:child_process";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
@@ -10,7 +12,7 @@ import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import { CHAPTERS } from "../src/questions";
-import { hash, outcome, programsOf, type Result, type Verified } from "../src/types";
+import { key, outcome, programsOf, type Program, type Result, type Verified } from "../src/types";
 
 const run = promisify(execFile);
 const EDITION = "2024";
@@ -24,16 +26,17 @@ interface Diagnostic {
   rendered: string;
 }
 
-async function compile(source: string): Promise<Result & { warnings: string[] }> {
+async function compile({ source, test }: Program): Promise<Result & { warnings: string[] }> {
   const dir = await mkdtemp(join(tmpdir(), "borrow-"));
   try {
-    // Named src/main.rs so rustc's output reads like a normal cargo project.
+    // Named as in a normal cargo project, so rustc's output reads like one: a program, or a library with tests.
+    const file = test ? "src/lib.rs" : "src/main.rs";
     await run("mkdir", ["-p", join(dir, "src")]);
-    await writeFile(join(dir, "src/main.rs"), source + "\n");
+    await writeFile(join(dir, file), source + "\n");
     const bin = join(dir, "main");
     const out = await run(
       "rustc",
-      ["--edition", EDITION, "--error-format=json", "--color", "never", "--crate-name", "main", "-o", bin, "src/main.rs"],
+      ["--edition", EDITION, "--error-format=json", "--color", "never", "--crate-name", "main", ...(test ? ["--test"] : []), "-o", bin, file],
       { cwd: dir }
     ).then(
       (r) => r.stderr,
@@ -62,6 +65,26 @@ async function compile(source: string): Promise<Result & { warnings: string[] }>
       };
     }
 
+    // The thread id changes every run; drop it so verified.json only changes when rustc does.
+    const steady = (text: string) => text.replace(/^thread '([^']+)' \(\d+\)/gm, "thread '$1'");
+
+    if (test) {
+      // One thread, so the tests run and report in the same order every time. A failing test exits with 101.
+      const report = await run(bin, ["--test-threads=1", "--color", "never"], { timeout: 30000 }).then(
+        (r) => r.stdout,
+        (e) => {
+          if (e.code !== 101) throw new Error(`tests exited unexpectedly:\n${source}`);
+          return e.stdout as string;
+        }
+      );
+      const summary = report.match(/^test result: \w+\. (\d+) passed; (\d+) failed; (\d+) ignored;/m);
+      if (!summary) throw new Error(`no test summary for:\n${source}\n${report}`);
+      const [passed, failed, ignored] = summary.slice(1).map(Number);
+      // The timing differs from run to run.
+      const stdout = steady(report).replace(/; finished in [\d.]+s/, "");
+      return { ok: true, errors: [], stdout, tests: { passed, failed, ignored }, warnings };
+    }
+
     // macOS checks each new binary on its first launch, which takes seconds when eight start at once.
     const result = await run(bin, [], { timeout: 30000 }).then(
       (r) => ({ stdout: r.stdout, panicked: false }),
@@ -69,9 +92,7 @@ async function compile(source: string): Promise<Result & { warnings: string[] }>
     );
     if ("failed" in result) {
       if (result.failed) throw new Error(`program exited unexpectedly:\n${source}`);
-      return { ok: true, errors: [], stdout: result.stdout, // The thread id changes every run; drop it so verified.json only changes when rustc does.
-        stderr: result.stderr.trim().replace(/^thread 'main' \(\d+\)/m, "thread 'main'"),
-        panicked: true, warnings };
+      return { ok: true, errors: [], stdout: result.stdout, stderr: steady(result.stderr.trim()), panicked: true, warnings };
     }
     return { ok: true, errors: [], ...result, warnings };
   } finally {
@@ -85,9 +106,9 @@ function check(ok: boolean, message: string): void {
 }
 
 const { stdout: version } = await run("rustc", ["--version"]);
-const sources = new Map<string, string>();
+const sources = new Map<string, Program>();
 for (const chapter of CHAPTERS) {
-  for (const q of chapter.questions) for (const p of programsOf(q)) sources.set(hash(p.source), p.source);
+  for (const q of chapter.questions) for (const p of programsOf(q)) sources.set(key(p.source, p.test), p);
 }
 
 // Compile in parallel; rustc is single-threaded for programs this small.
@@ -107,7 +128,7 @@ for (const chapter of CHAPTERS) {
     ids.add(q.id);
 
     for (const p of programsOf(q)) {
-      const r = results.get(hash(p.source))!;
+      const r = results.get(key(p.source, p.test))!;
       const label = p.choice === undefined ? where : `${where} choice ${p.choice}`;
       for (const line of p.source.split("\n")) {
         check(line.length <= MAX_WIDTH, `${label}: line wider than ${MAX_WIDTH} columns: ${line}`);
@@ -116,8 +137,8 @@ for (const chapter of CHAPTERS) {
       if (r.ok) check(r.warnings.length === 0, `${label}: compiles with warnings:\n${r.warnings.join("\n")}`);
     }
 
-    const base = results.get(hash(q.code))!;
-    const describe = (r: Result) => (r.ok ? `compiles, prints ${JSON.stringify(outcome(r))}` : `${r.errors.join(", ")} at line ${r.line}`);
+    const base = results.get(key(q.code, q.test))!;
+    const describe = (r: Result) => (r.ok ? `compiles, ${r.tests ? "reports" : "prints"} ${JSON.stringify(outcome(r))}` : `${r.errors.join(", ")} at line ${r.line}`);
 
     if (q.kind === "verdict" || q.kind === "fix") {
       const e = q.expect;
@@ -138,7 +159,7 @@ for (const chapter of CHAPTERS) {
       check(q.line >= 1 && q.line <= q.code.split("\n").length, `${where}: line ${q.line} is out of range`);
       programsOf(q).forEach((p) => {
         if (p.choice === undefined) return;
-        const r = results.get(hash(p.source))!;
+        const r = results.get(key(p.source, p.test))!;
         const wins = outcome(r) === q.goal;
         if (p.choice === q.answer) check(wins, `${where}: the answer should print ${JSON.stringify(q.goal)}, but ${describe(r)}`);
         else check(!wins, `${where}: choice ${p.choice} also works (${describe(r)})`);

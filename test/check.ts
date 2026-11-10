@@ -4,7 +4,7 @@
 // parts of a question that rustc doesn't see.
 import verifiedJson from "../src/verified.json";
 import { CHAPTERS } from "../src/questions";
-import { hash, programsOf, type Verified } from "../src/types";
+import { key, programsOf, type Verified } from "../src/types";
 
 const verified = verifiedJson as Verified;
 let failures = 0;
@@ -20,16 +20,16 @@ for (const chapter of CHAPTERS) {
   check(chapter.questions.length > 0, `${chapter.id}: no questions`);
   for (const q of chapter.questions) {
     for (const p of programsOf(q)) {
-      const key = hash(p.source);
-      needed.add(key);
-      check(key in verified.results, `${q.id}${p.choice === undefined ? "" : ` choice ${p.choice}`}: not verified. Run npm run verify.`);
+      const k = key(p.source, p.test);
+      needed.add(k);
+      check(k in verified.results, `${q.id}${p.choice === undefined ? "" : ` choice ${p.choice}`}: not verified. Run npm run verify.`);
     }
     for (const text of [q.explain, chapter.name]) check(text.split("`").length % 2 === 1, `${q.id}: unbalanced backticks`);
     check(!/\/\*/.test(q.code), `${q.id}: block comments aren't supported by the line highlighter`);
     if (q.kind !== "verdict") check(q.choices.length >= 2 && q.choices.length <= 4, `${q.id}: needs 2 to 4 choices`);
   }
 }
-for (const key of Object.keys(verified.results)) check(needed.has(key), `verified.json has a stale result ${key}. Run npm run verify.`);
+for (const k of Object.keys(verified.results)) check(needed.has(k), `verified.json has a stale result ${k}. Run npm run verify.`);
 
 if (failures) {
   console.error(`${failures} problem(s)`);

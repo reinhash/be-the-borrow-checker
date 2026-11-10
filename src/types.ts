@@ -20,6 +20,11 @@ interface Base {
   code: string;
   /** Shown after answering. `backticks` become inline code. */
   explain: string;
+  /**
+   * Build and run this the way `cargo test` does (`rustc --test`) instead of running `main`.
+   * The outcome is then the test summary, e.g. "1 passed, 1 failed".
+   */
+  test?: true;
 }
 
 /** Does this compile? Stamp ACCEPT or REJECT. */
@@ -75,6 +80,8 @@ export interface Result {
   panicked?: boolean;
   /** The panic message, for programs that panic. */
   stderr?: string;
+  /** For programs built with `--test`: how many tests passed, failed and were ignored. */
+  tests?: { passed: number; failed: number; ignored: number };
 }
 
 export interface Verified {
@@ -101,6 +108,11 @@ export function hash(source: string): string {
   return (h >>> 0).toString(16).padStart(8, "0");
 }
 
+/** Key of a program in verified.json. The same source run as a program and as tests has two results. */
+export function key(source: string, test = false): string {
+  return hash(test ? "#test\n" + source : source);
+}
+
 export function patch(code: string, line: number, replacement: string): string {
   const lines = code.split("\n");
   const indent = lines[line - 1].match(/^ */)![0];
@@ -111,6 +123,10 @@ export function patch(code: string, line: number, replacement: string): string {
 /** How a program behaves, in the same terms as an Output choice. */
 export function outcome(result: Result): string {
   if (!result.ok) return COMPILE_ERROR;
+  if (result.tests) {
+    const { passed, failed, ignored } = result.tests;
+    return `${passed} passed, ${failed} failed${ignored ? `, ${ignored} ignored` : ""}`;
+  }
   if (result.panicked) return PANIC;
   return result.stdout!.trim();
 }
@@ -119,10 +135,13 @@ export interface Program {
   source: string;
   /** For Fix questions: which choice this program is. */
   choice?: number;
+  /** Built with `--test`. */
+  test: boolean;
 }
 
 export function programsOf(q: Question): Program[] {
-  const base = [{ source: q.code }];
+  const test = q.test === true;
+  const base = [{ source: q.code, test }];
   if (q.kind !== "fix") return base;
-  return [...base, ...q.choices.map((c, choice) => ({ source: patch(q.code, q.line, c), choice }))];
+  return [...base, ...q.choices.map((c, choice) => ({ source: patch(q.code, q.line, c), choice, test }))];
 }

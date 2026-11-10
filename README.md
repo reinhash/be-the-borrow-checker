@@ -29,6 +29,10 @@ is taken on trust: `npm run verify` compiles every program with your local
 - that a fix question has exactly one choice that compiles and prints its goal,
 - that programs which compile do so without warnings.
 
+A question marked `test: true` is built with `rustc --test` and its tests are
+run, the way `cargo test` would. Its outcome is the test summary, for example
+`1 passed, 1 failed`, and that is what the answer choices are checked against.
+
 What `rustc` said is written to `src/verified.json`, and the game shows that
 output after each answer. The file records the compiler version it was made
 with. Error codes and line numbers can change between Rust releases, so a

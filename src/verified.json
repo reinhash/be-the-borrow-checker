@@ -88,6 +88,16 @@
       "stdout": "ab\n",
       "panicked": false
     },
+    "06a58987": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 1 test\ntest adds ... FAILED\n\nfailures:\n\n---- adds stdout ----\n\nthread 'adds' panicked at src/lib.rs:7:5:\nassertion `left == right` failed\n  left: 4\n right: 5\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    adds\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 0,
+        "failed": 1,
+        "ignored": 0
+      }
+    },
     "07b0a9d1": {
       "ok": false,
       "errors": [
@@ -344,6 +354,16 @@
       "line": 7,
       "rendered": "error[E0621]: explicit lifetime required in the type of `item`\n --> src/main.rs:7:9\n  |\n7 |         self.item = item;\n  |         ^^^^^^^^^^^^^^^^ lifetime `'a` required\n  |\nhelp: add explicit lifetime `'a` to the type of `item`\n  |\n6 -     fn set(&mut self, item: &'_ str) {\n6 +     fn set(&mut self, item: &'a str) {\n  |"
     },
+    "313ae933": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 2 tests\ntest quick ... ok\ntest slow ... ignored\n\ntest result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 1
+      }
+    },
     "31d31304": {
       "ok": false,
       "errors": [
@@ -486,6 +506,14 @@
       ],
       "line": 25,
       "rendered": "error[E0308]: mismatched types\n  --> src/main.rs:25:17\n   |\n25 |     chat(&Crab, &Robot);\n   |     ----        ^^^^^^ expected `&Crab`, found `&Robot`\n   |     |\n   |     arguments to this function are incorrect\n   |\n   = note: expected reference `&Crab`\n              found reference `&Robot`\nnote: function defined here\n  --> src/main.rs:20:4\n   |\n20 | fn chat<T: Speak>(a: &T, b: &T) {\n   |    ^^^^                  -----"
+    },
+    "429a8e40": {
+      "ok": false,
+      "errors": [
+        "E0425"
+      ],
+      "line": 9,
+      "rendered": "error[E0425]: cannot find function `double` in this scope\n --> src/lib.rs:9:20\n  |\n9 |         assert_eq!(double(2), 4);\n  |                    ^^^^^^ not found in this scope\n  |\nhelp: perhaps you intended to use this type\n  |\n9 -         assert_eq!(double(2), 4);\n9 +         assert_eq!(f64(2), 4);\n  |\nhelp: consider importing this function\n  |\n7 +     use crate::double;\n  |"
     },
     "45aae9ba": {
       "ok": true,
@@ -764,6 +792,16 @@
       "stderr": "thread 'main' panicked at src/main.rs:3:21:\nindex out of bounds: the len is 3 but the index is 7\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
       "panicked": true
     },
+    "7705aae9": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 2 tests\ntest adds ... ok\ntest adds_wrong ... FAILED\n\nfailures:\n\n---- adds_wrong stdout ----\n\nthread 'adds_wrong' panicked at src/lib.rs:12:5:\nassertion `left == right` failed\n  left: 4\n right: 5\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n\n\nfailures:\n    adds_wrong\n\ntest result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 1,
+        "failed": 1,
+        "ignored": 0
+      }
+    },
     "77c4fde7": {
       "ok": false,
       "errors": [
@@ -838,6 +876,16 @@
       ],
       "line": 7,
       "rendered": "error: lifetime may not live long enough\n --> src/main.rs:7:9\n  |\n5 | impl<'a> Holder<'a> {\n  |      -- lifetime `'a` defined here\n6 |     fn set<'b>(&mut self, item: &'b str) {\n  |            -- lifetime `'b` defined here\n7 |         self.item = item;\n  |         ^^^^^^^^^^^^^^^^ assignment requires that `'b` must outlive `'a`\n  |\n  = help: consider adding the following bound: `'b: 'a`"
+    },
+    "8147a8c2": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 2 tests\ntest by_two - should panic ... FAILED\ntest by_zero - should panic ... ok\n\nfailures:\n\n---- by_two stdout ----\nnote: test did not panic as expected at src/lib.rs:16:4\n\nfailures:\n    by_two\n\ntest result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 1,
+        "failed": 1,
+        "ignored": 0
+      }
     },
     "81879ad8": {
       "ok": true,
@@ -926,6 +974,16 @@
       ],
       "line": 8,
       "rendered": "error[E0603]: function `cook` is private\n --> src/main.rs:8:29\n  |\n8 |     println!(\"{}\", kitchen::cook());\n  |                             ^^^^ private function\n  |\nnote: the function `cook` is defined here\n --> src/main.rs:2:5\n  |\n2 |     pub(self) fn cook() -> &'static str {\n  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
+    "8b6d6e6a": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 2 tests\ntest plain ... ok\ntest with_unit ... FAILED\n\nfailures:\n\n---- with_unit stdout ----\nError: ParseIntError { kind: InvalidDigit }\n\n\nfailures:\n    with_unit\n\ntest result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 1,
+        "failed": 1,
+        "ignored": 0
+      }
     },
     "8f99a59b": {
       "ok": false,
@@ -1078,6 +1136,16 @@
       "errors": [],
       "stdout": "12 10\n",
       "panicked": false
+    },
+    "9ff98997": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 1 test\ntest too_big - should panic ... FAILED\n\nfailures:\n\n---- too_big stdout ----\n\nthread 'too_big' panicked at src/lib.rs:6:9:\nmust be at most 100\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nnote: panic did not contain expected string\n      panic message: \"must be at most 100\"\n expected substring: \"at least 1\"\n\nfailures:\n    too_big\n\ntest result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 0,
+        "failed": 1,
+        "ignored": 0
+      }
     },
     "a3103ae4": {
       "ok": false,
@@ -1513,6 +1581,16 @@
       ],
       "line": 4,
       "rendered": "error[E0499]: cannot borrow `score` as mutable more than once at a time\n --> src/main.rs:4:13\n  |\n3 |     let a = &mut score;\n  |             ---------- first mutable borrow occurs here\n4 |     let b = &mut score;\n  |             ^^^^^^^^^^ second mutable borrow occurs here\n5 |     *a += 1;\n  |     ------- first borrow later used here"
+    },
+    "dde395c9": {
+      "ok": true,
+      "errors": [],
+      "stdout": "\nrunning 1 test\ntest tests::doubles ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out\n\n",
+      "tests": {
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0
+      }
     },
     "df111acf": {
       "ok": true,
