@@ -860,7 +860,7 @@ h1 em {
   border: 3px double currentColor;
   border-radius: 12px;
   background: var(--surface);
-  transition: transform 0.15s, background 0.15s;
+  transition: background 0.15s;
 }
 
 .stamp-btn.accept {
@@ -871,20 +871,12 @@ h1 em {
   color: var(--bad);
 }
 
-.stamp-btn:hover {
-  transform: translateY(-1px);
-}
-
 .stamp-btn.accept:hover {
   background: var(--good-soft);
 }
 
 .stamp-btn.reject:hover {
   background: var(--bad-soft);
-}
-
-.stamp-btn:active {
-  transform: translateY(1px);
 }
 
 .choices {
@@ -907,12 +899,11 @@ h1 em {
   border: 1.5px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color 0.15s;
 }
 
 .choice:hover {
   border-color: var(--accent);
-  transform: translateY(-1px);
 }
 
 .choice.struck {
@@ -923,7 +914,6 @@ h1 em {
 
 .choice.struck:hover {
   border-color: var(--line);
-  transform: none;
 }
 
 .joker-row {
@@ -945,11 +935,6 @@ h1 em {
   border: 1.5px solid var(--accent);
   border-radius: 999px;
   background: var(--accent-soft);
-  transition: transform 0.15s;
-}
-
-.joker:hover:not(:disabled) {
-  transform: translateY(-1px);
 }
 
 .joker:disabled {
