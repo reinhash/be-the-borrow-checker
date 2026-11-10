@@ -1,0 +1,805 @@
+{
+  "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+  "edition": "2024",
+  "results": {
+    "51677699": {
+      "ok": false,
+      "errors": [
+        "E0308",
+        "E0308"
+      ],
+      "line": 5,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:5:9\n  |\n4 |     match r.unwrap() {\n  |           ---------- this expression has type `String`\n5 |         Some(s) => println!(\"{s}\"),\n  |         ^^^^^^^ expected `String`, found `Option<_>`\n  |\n  = note: expected struct `String`\n               found enum `Option<_>`\n\nerror[E0308]: mismatched types\n   --> src/main.rs:6:9\n    |\n  4 |     match r.unwrap() {\n    |           ---------- this expression has type `String`\n  5 |         Some(s) => println!(\"{s}\"),\n  6 |         None => {}\n    |         ^^^^\n    |         |\n    |         expected `String`, found `Option<_>`\n    |         `None` is interpreted as a unit variant, not a new binding\n    |\n   ::: ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:601:5\n    |\n601 |     None,\n    |     ---- unit variant defined here\n    |\n    = note: expected struct `String`\n                 found enum `Option<_>`\nhelp: introduce a new binding instead\n    |\n  6 -         None => {}\n  6 +         other_none => {}\n    |"
+    },
+    "02302ea3": {
+      "ok": true,
+      "errors": [],
+      "stdout": "hi b a ",
+      "panicked": false
+    },
+    "033be142": {
+      "ok": true,
+      "errors": [],
+      "stdout": "crab crab crab\n",
+      "panicked": false
+    },
+    "034aa669": {
+      "ok": true,
+      "errors": [],
+      "stdout": "right\nleft\n",
+      "panicked": false
+    },
+    "0569d4ff": {
+      "ok": true,
+      "errors": [],
+      "stdout": "ab\n",
+      "panicked": false
+    },
+    "0bdff0a1": {
+      "ok": true,
+      "errors": [],
+      "stdout": "7! hi!\n",
+      "panicked": false
+    },
+    "0f8e41a3": {
+      "ok": false,
+      "errors": [
+        "E0726"
+      ],
+      "line": 5,
+      "rendered": "error[E0726]: implicit elided lifetime not allowed here\n --> src/main.rs:5:10\n  |\n5 | impl<'a> Excerpt {\n  |          ^^^^^^^ expected lifetime parameter\n  |\nhelp: indicate the anonymous lifetime\n  |\n5 | impl<'a> Excerpt<'_> {\n  |                 ++++"
+    },
+    "11829bb7": {
+      "ok": false,
+      "errors": [
+        "E0502"
+      ],
+      "line": 4,
+      "rendered": "error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable\n --> src/main.rs:4:5\n  |\n3 |     let first = v.first().unwrap();\n  |                 - immutable borrow occurs here\n4 |     v.push(4);\n  |     ^^^^^^^^^ mutable borrow occurs here\n5 |     println!(\"{first}\");\n  |                ----- immutable borrow later used here"
+    },
+    "12a210ee": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 13,
+      "rendered": "error[E0382]: borrow of partially moved value: `u`\n  --> src/main.rs:13:20\n   |\n12 |     let n = u.name;\n   |             ------ value partially moved here\n13 |     println!(\"{n} {u:?}\");\n   |                    ^ value borrowed here after partial move\n   |\n   = note: partial move occurs because `u.name` has type `String`, which does not implement the `Copy` trait"
+    },
+    "1409edcb": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 21,
+      "rendered": "error[E0308]: `if` and `else` have incompatible types\n  --> src/main.rs:21:30\n   |\n21 |     if loud { Robot } else { Crab }\n   |               -----          ^^^^ expected `Robot`, found `Crab`\n   |               |\n   |               expected because of this\n   |\nhelp: you could change the return type to be a boxed trait object\n   |\n20 - fn pick(loud: bool) -> impl Speak {\n20 + fn pick(loud: bool) -> Box<dyn Speak> {\n   |\nhelp: if you change the return type to expect trait objects, box the returned expressions\n   |\n21 |     if loud { Box::new(Robot) } else { Box::new(Crab) }\n   |               +++++++++     +          +++++++++    +"
+    },
+    "19c10d5f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "[10, 20, 2]\n",
+      "panicked": false
+    },
+    "1e13ede6": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 7,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:19\n  |\n7 |     let n = shout(&name);\n  |             ----- ^^^^^ expected `String`, found `&String`\n  |             |\n  |             arguments to this function are incorrect\n  |\nnote: function defined here\n --> src/main.rs:1:4\n  |\n1 | fn shout(s: String) -> usize {\n  |    ^^^^^ ---------\nhelp: consider removing the borrow\n  |\n7 -     let n = shout(&name);\n7 +     let n = shout(name);\n  |"
+    },
+    "239bd2c2": {
+      "ok": false,
+      "errors": [
+        "E0507"
+      ],
+      "line": 3,
+      "rendered": "error[E0507]: cannot move out of index of `Vec<String>`\n --> src/main.rs:3:25\n  |\n3 |     let first: String = names[0];\n  |                         ^^^^^^^^ move occurs because value has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider borrowing here\n  |\n3 |     let first: String = &names[0];\n  |                         +\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n3 |     let first: String = names[0].clone();\n  |                                 ++++++++"
+    },
+    "29542f1b": {
+      "ok": false,
+      "errors": [
+        "E0614"
+      ],
+      "line": 4,
+      "rendered": "error[E0614]: type `Option<String>` cannot be dereferenced\n --> src/main.rs:4:11\n  |\n4 |     match **r {\n  |           ^^^ can't be dereferenced"
+    },
+    "2b61a911": {
+      "ok": false,
+      "errors": [
+        "E0425"
+      ],
+      "line": 17,
+      "rendered": "error[E0425]: cannot find function `area` in module `shapes`\n  --> src/main.rs:17:28\n   |\n17 |     println!(\"{}\", shapes::area(&s));\n   |                            ^^^^ not found in `shapes`"
+    },
+    "2edcaacc": {
+      "ok": false,
+      "errors": [
+        "E0507"
+      ],
+      "line": 7,
+      "rendered": "error[E0507]: cannot move out of `self.items` which is behind a mutable reference\n --> src/main.rs:7:9\n  |\n7 |         self.items\n  |         ^^^^^^^^^^ move occurs because `self.items` has type `Vec<String>`, which does not implement the `Copy` trait\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n7 |         self.items.clone()\n  |                   ++++++++"
+    },
+    "3123ba73": {
+      "ok": false,
+      "errors": [
+        "E0621"
+      ],
+      "line": 7,
+      "rendered": "error[E0621]: explicit lifetime required in the type of `item`\n --> src/main.rs:7:9\n  |\n7 |         self.item = item;\n  |         ^^^^^^^^^^^^^^^^ lifetime `'a` required\n  |\nhelp: add explicit lifetime `'a` to the type of `item`\n  |\n6 -     fn set(&mut self, item: &'_ str) {\n6 +     fn set(&mut self, item: &'a str) {\n  |"
+    },
+    "36d6f737": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 7,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:19\n  |\n7 |     let n = shout(name.as_str());\n  |             ----- ^^^^^^^^^^^^^ expected `String`, found `&str`\n  |             |\n  |             arguments to this function are incorrect\n  |\nnote: function defined here\n --> src/main.rs:1:4\n  |\n1 | fn shout(s: String) -> usize {\n  |    ^^^^^ ---------\nhelp: try removing the method call\n  |\n7 -     let n = shout(name.as_str());\n7 +     let n = shout(name);\n  |"
+    },
+    "38132a9a": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 16,
+      "rendered": "error[E0308]: mismatched types\n   --> src/main.rs:16:14\n    |\n 16 |     Box::new(Parrot { phrase })\n    |     -------- ^^^^^^^^^^^^^^^^^ expected `&dyn Speak`, found `Parrot<'_>`\n    |     |\n    |     arguments to this function are incorrect\n    |\n    = note: expected reference `&dyn Speak`\n                  found struct `Parrot<'_>`\nnote: associated function defined here\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/alloc/src/boxed.rs:284:12\n    |\n284 |     pub fn new(x: T) -> Self {\n    |            ^^^\nhelp: consider borrowing here\n    |\n 16 |     Box::new(&Parrot { phrase })\n    |              +"
+    },
+    "38301e7e": {
+      "ok": false,
+      "errors": [
+        "lifetime may not live long enough"
+      ],
+      "line": 16,
+      "rendered": "error: lifetime may not live long enough\n  --> src/main.rs:16:5\n   |\n15 | fn boxed(phrase: &str) -> Box<dyn Speak> {\n   |                  - let's call the lifetime of this reference `'1`\n16 |     Box::new(Parrot { phrase })\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ returning this value requires that `'1` must outlive `'static`\n   |\nhelp: to declare that the trait object captures data from argument `phrase`, you can add an explicit `'_` lifetime bound\n   |\n15 | fn boxed(phrase: &str) -> Box<dyn Speak + '_> {\n   |                                         ++++"
+    },
+    "387aea01": {
+      "ok": false,
+      "errors": [
+        "E0515"
+      ],
+      "line": 3,
+      "rendered": "error[E0515]: cannot return reference to local variable `s`\n --> src/main.rs:3:5\n  |\n3 |     &s\n  |     ^^ returns a reference to data owned by the current function"
+    },
+    "3c095b58": {
+      "ok": false,
+      "errors": [
+        "E0597"
+      ],
+      "line": 10,
+      "rendered": "error[E0597]: `b` does not live long enough\n  --> src/main.rs:10:27\n   |\n 9 |         let b = String::from(\"crab\");\n   |             - binding `b` declared here\n10 |         out = longest(&a, &b);\n   |                           ^^ borrowed value does not live long enough\n11 |     }\n   |     - `b` dropped here while still borrowed\n12 |     println!(\"{out}\");\n   |                --- borrow later used here"
+    },
+    "3c33afbc": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 13,
+      "rendered": "error[E0277]: `Point` doesn't implement `std::fmt::Display`\n  --> src/main.rs:13:10\n   |\n13 |     show(Point { x: 1 });\n   |     ---- ^^^^^^^^^^^^^^ unsatisfied trait bound\n   |     |\n   |     required by a bound introduced by this call\n   |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n  --> src/main.rs:3:1\n   |\n 3 | struct Point {\n   | ^^^^^^^^^^^^\nnote: required by a bound in `show`\n  --> src/main.rs:7:12\n   |\n 7 | fn show<T: Display>(t: T) {\n   |            ^^^^^^^ required by this bound in `show`"
+    },
+    "3e14ad6b": {
+      "ok": false,
+      "errors": [
+        "E0597"
+      ],
+      "line": 11,
+      "rendered": "error[E0597]: `b` does not live long enough\n  --> src/main.rs:11:41\n   |\n10 |         let b = String::from(\"right\");\n   |             - binding `b` declared here\n11 |         let p = Pair { left: &a, right: &b };\n   |                                         ^^ borrowed value does not live long enough\n...\n14 |     }\n   |     - `b` dropped here while still borrowed\n15 |     println!(\"{l}\");\n   |                - borrow later used here"
+    },
+    "3f3cc241": {
+      "ok": true,
+      "errors": [],
+      "stdout": "CALL ME\n",
+      "panicked": false
+    },
+    "424570c4": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 25,
+      "rendered": "error[E0308]: mismatched types\n  --> src/main.rs:25:17\n   |\n25 |     chat(&Crab, &Robot);\n   |     ----        ^^^^^^ expected `&Crab`, found `&Robot`\n   |     |\n   |     arguments to this function are incorrect\n   |\n   = note: expected reference `&Crab`\n              found reference `&Robot`\nnote: function defined here\n  --> src/main.rs:20:4\n   |\n20 | fn chat<T: Speak>(a: &T, b: &T) {\n   |    ^^^^                  -----"
+    },
+    "47cccd90": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 6,
+      "rendered": "error[E0382]: borrow of moved value: `names`\n   --> src/main.rs:6:20\n    |\n  2 |     let names = vec![String::from(\"Ann\")];\n    |         ----- move occurs because `names` has type `Vec<String>`, which does not implement the `Copy` trait\n  3 |     for n in names {\n    |              ----- `names` moved due to this implicit call to `.into_iter()`\n...\n  6 |     println!(\"{}\", names.len());\n    |                    ^^^^^ value borrowed here after move\n    |\nnote: `into_iter` takes ownership of the receiver `self`, which moves `names`\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/iter/traits/collect.rs:312:18\n    |\n312 |     fn into_iter(self) -> Self::IntoIter;\n    |                  ^^^^\nhelp: consider iterating over a slice of the `Vec<String>`'s content to avoid moving into the `for` loop\n    |\n  3 |     for n in &names {\n    |              +"
+    },
+    "49d3c9bb": {
+      "ok": true,
+      "errors": [],
+      "stdout": "hi Corro\nFerris\n",
+      "panicked": false
+    },
+    "4c2a1aff": {
+      "ok": false,
+      "errors": [
+        "E0261"
+      ],
+      "line": 5,
+      "rendered": "error[E0261]: use of undeclared lifetime name `'a`\n --> src/main.rs:5:14\n  |\n5 | impl Excerpt<'a> {\n  |              ^^ undeclared lifetime\n  |\nhelp: consider introducing lifetime `'a` here\n  |\n5 | impl<'a> Excerpt<'a> {\n  |     ++++"
+    },
+    "4da64caf": {
+      "ok": false,
+      "errors": [
+        "E0597"
+      ],
+      "line": 9,
+      "rendered": "error[E0597]: `novel` does not live long enough\n  --> src/main.rs:9:30\n   |\n 8 |         let novel = String::from(\"Call me Ishmael.\");\n   |             ----- binding `novel` declared here\n 9 |         e = Excerpt { part: &novel[..4] };\n   |                              ^^^^^ borrowed value does not live long enough\n10 |     }\n   |     - `novel` dropped here while still borrowed\n11 |     println!(\"{}\", e.part);\n   |                    ------ borrow later used here"
+    },
+    "5120ad70": {
+      "ok": false,
+      "errors": [
+        "E0373"
+      ],
+      "line": 5,
+      "rendered": "error[E0373]: closure may outlive the current function, but it borrows `v`, which is owned by the current function\n --> src/main.rs:5:27\n  |\n5 |     let h = thread::spawn(|| {\n  |                           ^^ may outlive borrowed value `v`\n6 |         println!(\"{v:?}\");\n  |                    - `v` is borrowed here\n  |\nnote: function requires argument type to outlive `'static`\n --> src/main.rs:5:13\n  |\n5 |       let h = thread::spawn(|| {\n  |  _____________^\n6 | |         println!(\"{v:?}\");\n7 | |     });\n  | |______^\nhelp: to force the closure to take ownership of `v` (and any other referenced variables), use the `move` keyword\n  |\n5 |     let h = thread::spawn(move || {\n  |                           ++++"
+    },
+    "514dd482": {
+      "ok": true,
+      "errors": [],
+      "stdout": "3 2\n",
+      "panicked": false
+    },
+    "5971e8cf": {
+      "ok": true,
+      "errors": [],
+      "stdout": "[1, 2, 3]\n3\n",
+      "panicked": false
+    },
+    "598219ce": {
+      "ok": false,
+      "errors": [
+        "E0499"
+      ],
+      "line": 18,
+      "rendered": "error[E0499]: cannot borrow `g` as mutable more than once at a time\n  --> src/main.rs:18:13\n   |\n17 |     let s = g.score();\n   |             - first mutable borrow occurs here\n18 |     let l = g.lives();\n   |             ^ second mutable borrow occurs here\n19 |     *s += 100;\n   |     --------- first borrow later used here"
+    },
+    "5b35c7dd": {
+      "ok": true,
+      "errors": [],
+      "stdout": "7\n",
+      "panicked": false
+    },
+    "5ded6ef2": {
+      "ok": true,
+      "errors": [],
+      "stdout": "3\n",
+      "panicked": false
+    },
+    "5e4e063d": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 8,
+      "rendered": "error[E0382]: use of moved value: `snack`\n --> src/main.rs:8:13\n  |\n6 |     let snack = String::from(\"kelp\");\n  |         ----- move occurs because `snack` has type `String`, which does not implement the `Copy` trait\n7 |     for _ in 0..2 {\n  |     ------------- inside of this loop\n8 |         eat(snack);\n  |             ^^^^^ value moved here, in previous iteration of loop\n  |\nnote: consider changing this parameter type in function `eat` to borrow instead if owning the value isn't necessary\n --> src/main.rs:1:11\n  |\n1 | fn eat(s: String) {\n  |    ---    ^^^^^^ this parameter takes ownership of the value\n  |    |\n  |    in this function\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n8 |         eat(snack.clone());\n  |                  ++++++++"
+    },
+    "5e7dce13": {
+      "ok": true,
+      "errors": [],
+      "stdout": "7\n",
+      "panicked": false
+    },
+    "633a5a14": {
+      "ok": true,
+      "errors": [],
+      "stdout": "2\n",
+      "panicked": false
+    },
+    "65918c21": {
+      "ok": true,
+      "errors": [],
+      "stdout": "new\n",
+      "panicked": false
+    },
+    "676cfec1": {
+      "ok": false,
+      "errors": [
+        "E0499",
+        "E0502"
+      ],
+      "line": 14,
+      "rendered": "error[E0499]: cannot borrow `lx` as mutable more than once at a time\n  --> src/main.rs:14:5\n   |\n13 |     lx.skip();\n   |     -- first mutable borrow occurs here\n14 |     lx.skip();\n   |     ^^\n   |     |\n   |     second mutable borrow occurs here\n   |     first borrow later used here\n\nerror[E0502]: cannot borrow `lx.rest` as immutable because it is also borrowed as mutable\n  --> src/main.rs:15:20\n   |\n13 |     lx.skip();\n   |     -- mutable borrow occurs here\n14 |     lx.skip();\n15 |     println!(\"{}\", lx.rest);\n   |                    ^^^^^^^\n   |                    |\n   |                    immutable borrow occurs here\n   |                    mutable borrow later used here"
+    },
+    "6ab9023a": {
+      "ok": false,
+      "errors": [
+        "E0369"
+      ],
+      "line": 2,
+      "rendered": "error[E0369]: binary operation `>` cannot be applied to type `T`\n --> src/main.rs:2:10\n  |\n2 |     if a > b { a } else { b }\n  |        - ^ - T\n  |        |\n  |        T\n  |\nhelp: consider further restricting type parameter `T` with trait `PartialOrd`\n  |\n1 | fn largest<T: Copy + std::cmp::PartialOrd>(a: T, b: T) -> T {\n  |                    ++++++++++++++++++++++"
+    },
+    "6ec9249f": {
+      "ok": false,
+      "errors": [
+        "E0046"
+      ],
+      "line": 8,
+      "rendered": "error[E0046]: not all trait items implemented, missing: `name`\n --> src/main.rs:8:1\n  |\n2 |     fn name(&self) -> String;\n  |     ------------------------- `name` from trait\n...\n8 | impl Speak for Crab {\n  | ^^^^^^^^^^^^^^^^^^^ missing `name` in implementation"
+    },
+    "6ef5ccbe": {
+      "ok": false,
+      "errors": [
+        "E0106"
+      ],
+      "line": 2,
+      "rendered": "error[E0106]: missing lifetime specifier\n --> src/main.rs:2:11\n  |\n2 |     part: &str,\n  |           ^ expected named lifetime parameter\n  |\nhelp: consider introducing a named lifetime parameter\n  |\n1 ~ struct Excerpt<'a> {\n2 ~     part: &'a str,\n  |"
+    },
+    "70de31c1": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 4,
+      "rendered": "error[E0382]: borrow of moved value: `a`\n --> src/main.rs:4:16\n  |\n2 |     let a = String::from(\"crab\");\n  |         - move occurs because `a` has type `String`, which does not implement the `Copy` trait\n3 |     let b = a;\n  |             - value moved here\n4 |     println!(\"{a} and {b}\");\n  |                ^ value borrowed here after move\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n3 |     let b = a.clone();\n  |              ++++++++"
+    },
+    "7162d7bd": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Ferris says hi, beep\n",
+      "panicked": false
+    },
+    "738b3e95": {
+      "ok": false,
+      "errors": [
+        "E0621"
+      ],
+      "line": 7,
+      "rendered": "error[E0621]: explicit lifetime required in the type of `item`\n --> src/main.rs:7:9\n  |\n7 |         self.item = item;\n  |         ^^^^^^^^^^^^^^^^ lifetime `'a` required\n  |\nhelp: add explicit lifetime `'a` to the type of `item`\n  |\n6 |     fn set(&mut self, item: &'a str) {\n  |                              ++"
+    },
+    "73bb3852": {
+      "ok": false,
+      "errors": [
+        "E0597"
+      ],
+      "line": 16,
+      "rendered": "error[E0597]: `e` does not live long enough\n  --> src/main.rs:16:13\n   |\n15 |         let e = Excerpt { part: &novel[..4] };\n   |             - binding `e` declared here\n16 |         p = e.part();\n   |             ^ borrowed value does not live long enough\n17 |     }\n   |     - `e` dropped here while still borrowed\n18 |     println!(\"{p}\");\n   |                - borrow later used here"
+    },
+    "78612a9f": {
+      "ok": false,
+      "errors": [
+        "lifetime may not live long enough"
+      ],
+      "line": 10,
+      "rendered": "error: lifetime may not live long enough\n  --> src/main.rs:10:13\n   |\n 6 |     fn pick(&self, other: &str) -> &str {\n   |             -             - let's call the lifetime of this reference `'1`\n   |             |\n   |             let's call the lifetime of this reference `'2`\n...\n10 |             other\n   |             ^^^^^ method was supposed to return data with lifetime `'2` but it is returning data with lifetime `'1`\n   |\nhelp: consider introducing a named lifetime parameter and update trait if needed\n   |\n 6 |     fn pick<'a>(&self, other: &'a str) -> &'a str {\n   |            ++++                ++          ++"
+    },
+    "79e132f5": {
+      "ok": false,
+      "errors": [
+        "E0594"
+      ],
+      "line": 7,
+      "rendered": "error[E0594]: cannot assign to `self.rest`, which is behind a `&` reference\n --> src/main.rs:7:9\n  |\n7 |         self.rest = &self.rest[1..];\n  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `self` is a `&` reference, so it cannot be written to\n  |\nhelp: consider changing this to be a mutable reference\n  |\n6 |     fn skip(&'a mut self) {\n  |                 +++"
+    },
+    "7b1938e6": {
+      "ok": true,
+      "errors": [],
+      "stdout": "click beep\n",
+      "panicked": false
+    },
+    "7d811be0": {
+      "ok": false,
+      "errors": [
+        "E0506"
+      ],
+      "line": 4,
+      "rendered": "error[E0506]: cannot assign to `name` because it is borrowed\n --> src/main.rs:4:5\n  |\n3 |     let r = &name;\n  |             ----- `name` is borrowed here\n4 |     name = String::from(\"Bob\");\n  |     ^^^^ `name` is assigned to here but it was already borrowed\n5 |     println!(\"{r}\");\n  |                - borrow later used here"
+    },
+    "7d856b96": {
+      "ok": false,
+      "errors": [
+        "E0502"
+      ],
+      "line": 5,
+      "rendered": "error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable\n --> src/main.rs:5:13\n  |\n3 |     for x in &v {\n  |              --\n  |              |\n  |              immutable borrow occurs here\n  |              immutable borrow later used here\n4 |         if *x == 2 {\n5 |             v.push(4);\n  |             ^^^^^^^^^ mutable borrow occurs here"
+    },
+    "7e866757": {
+      "ok": false,
+      "errors": [
+        "lifetime may not live long enough"
+      ],
+      "line": 7,
+      "rendered": "error: lifetime may not live long enough\n --> src/main.rs:7:9\n  |\n5 | impl<'a> Holder<'a> {\n  |      -- lifetime `'a` defined here\n6 |     fn set<'b>(&mut self, item: &'b str) {\n  |            -- lifetime `'b` defined here\n7 |         self.item = item;\n  |         ^^^^^^^^^^^^^^^^ assignment requires that `'b` must outlive `'a`\n  |\n  = help: consider adding the following bound: `'b: 'a`"
+    },
+    "81879ad8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "1\n",
+      "panicked": false
+    },
+    "825c2ab2": {
+      "ok": false,
+      "errors": [
+        "E0369"
+      ],
+      "line": 2,
+      "rendered": "error[E0369]: binary operation `>` cannot be applied to type `T`\n --> src/main.rs:2:10\n  |\n2 |     if a > b { a } else { b }\n  |        - ^ - T\n  |        |\n  |        T\n  |\nhelp: consider further restricting type parameter `T` with trait `PartialOrd`\n  |\n1 | fn largest<T: PartialEq + std::cmp::PartialOrd>(a: T, b: T) -> T {\n  |                         ++++++++++++++++++++++"
+    },
+    "84e0178b": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 17,
+      "rendered": "error[E0599]: no method named `area` found for struct `Square` in the current scope\n  --> src/main.rs:17:22\n   |\n 3 |         fn area(&self) -> u32;\n   |            ---- the method is available for `Square` here\n...\n 6 |     pub struct Square(pub u32);\n   |     ----------------- method `area` not found for this struct\n...\n17 |     println!(\"{}\", s.area());\n   |                      ^^^^ method not found in `Square`\n   |\n   = help: items from traits can only be used if the trait is in scope\nhelp: trait `Area` which provides `area` is implemented but not in scope; perhaps you want to import it\n   |\n 1 + use crate::shapes::Area;\n   |"
+    },
+    "8503869f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Ann\n",
+      "panicked": false
+    },
+    "8f99a59b": {
+      "ok": false,
+      "errors": [
+        "E0507"
+      ],
+      "line": 3,
+      "rendered": "error[E0507]: cannot move out of index of `Vec<String>`\n --> src/main.rs:3:17\n  |\n3 |     let first = names[0];\n  |                 ^^^^^^^^ move occurs because value has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider borrowing here\n  |\n3 |     let first = &names[0];\n  |                 +\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n3 |     let first = names[0].clone();\n  |                         ++++++++"
+    },
+    "922387fa": {
+      "ok": false,
+      "errors": [
+        "E0038"
+      ],
+      "line": 14,
+      "rendered": "error[E0038]: the trait `Shape` is not dyn compatible\n  --> src/main.rs:14:20\n   |\n14 |     let s: Box<dyn Shape> = Box::new(Square(2));\n   |                    ^^^^^ `Shape` is not dyn compatible\n   |\nnote: for a trait to be dyn compatible it needs to allow building a vtable\n      for more information, visit <https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility>\n  --> src/main.rs:2:25\n   |\n 1 | trait Shape {\n   |       ----- this trait is not dyn compatible...\n 2 |     fn double(&self) -> Self;\n   |                         ^^^^ ...because method `double` references the `Self` type in its return type\n   = help: consider moving `double` to another trait\n   = help: only type `Square` implements `Shape`; consider using it directly instead."
+    },
+    "97eb7028": {
+      "ok": false,
+      "errors": [
+        "E0597"
+      ],
+      "line": 7,
+      "rendered": "error[E0597]: `s` does not live long enough\n --> src/main.rs:7:21\n  |\n6 |     let s = String::from(\"owned\");\n  |         - binding `s` declared here\n7 |     let kept = keep(&s);\n  |                -----^^-\n  |                |    |\n  |                |    borrowed value does not live long enough\n  |                argument requires that `s` is borrowed for `'static`\n8 |     println!(\"{kept}\");\n9 | }\n  | - `s` dropped here while still borrowed\n  |\nnote: requirement that the value outlives `'static` introduced here\n --> src/main.rs:1:12\n  |\n1 | fn keep<T: 'static>(t: T) -> T {\n  |            ^^^^^^^"
+    },
+    "9860a235": {
+      "ok": false,
+      "errors": [
+        "E0505"
+      ],
+      "line": 8,
+      "rendered": "error[E0505]: cannot move out of `text` because it is borrowed\n --> src/main.rs:8:10\n  |\n6 |     let text = String::from(\"borrow checker\");\n  |         ---- binding `text` declared here\n7 |     let w = first_word(&text);\n  |                        ----- borrow of `text` occurs here\n8 |     drop(text);\n  |          ^^^^ move out of `text` occurs here\n9 |     println!(\"{w}\");\n  |                - borrow later used here\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n7 |     let w = first_word(&text.clone());\n  |                             ++++++++"
+    },
+    "9c44b1f9": {
+      "ok": true,
+      "errors": [],
+      "stdout": "hi!\n",
+      "panicked": false
+    },
+    "9cf4b4d3": {
+      "ok": false,
+      "errors": [
+        "E0499",
+        "E0502"
+      ],
+      "line": 14,
+      "rendered": "error[E0499]: cannot borrow `lx` as mutable more than once at a time\n  --> src/main.rs:14:5\n   |\n13 |     lx.skip();\n   |     -- first mutable borrow occurs here\n14 |     lx.skip();\n   |     ^^\n   |     |\n   |     second mutable borrow occurs here\n   |     first borrow later used here\n\nerror[E0502]: cannot borrow `lx.rest` as immutable because it is also borrowed as mutable\n  --> src/main.rs:15:20\n   |\n13 |     lx.skip();\n   |     -- mutable borrow occurs here\n14 |     lx.skip();\n15 |     println!(\"{}\", lx.rest);\n   |                    ^^^^^^^\n   |                    |\n   |                    immutable borrow occurs here\n   |                    mutable borrow later used here"
+    },
+    "9ee7d1df": {
+      "ok": false,
+      "errors": [
+        "E0515"
+      ],
+      "line": 7,
+      "rendered": "error[E0515]: cannot return value referencing local variable `s`\n --> src/main.rs:7:5\n  |\n7 |     Excerpt { part: &s }\n  |     ^^^^^^^^^^^^^^^^--^^\n  |     |               |\n  |     |               `s` is borrowed here\n  |     returns a value referencing data owned by the current function"
+    },
+    "a3103ae4": {
+      "ok": false,
+      "errors": [
+        "E0499"
+      ],
+      "line": 4,
+      "rendered": "error[E0499]: cannot borrow `v` as mutable more than once at a time\n --> src/main.rs:4:5\n  |\n3 |     let first = &mut v[0];\n  |                      - first mutable borrow occurs here\n4 |     v.push(4);\n  |     ^ second mutable borrow occurs here\n5 |     println!(\"{first}\");\n  |                ----- first borrow later used here"
+    },
+    "a481beac": {
+      "ok": false,
+      "errors": [
+        "lifetime may not live long enough",
+        "lifetime may not live long enough"
+      ],
+      "line": 2,
+      "rendered": "error: lifetime may not live long enough\n --> src/main.rs:2:28\n  |\n1 | fn longest(a: &str, b: &str) -> &'static str {\n  |               - let's call the lifetime of this reference `'1`\n2 |     if a.len() > b.len() { a } else { b }\n  |                            ^ returning this value requires that `'1` must outlive `'static`\n\nerror: lifetime may not live long enough\n --> src/main.rs:2:39\n  |\n1 | fn longest(a: &str, b: &str) -> &'static str {\n  |                        - let's call the lifetime of this reference `'2`\n2 |     if a.len() > b.len() { a } else { b }\n  |                                       ^ returning this value requires that `'2` must outlive `'static`"
+    },
+    "a4db982c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "ferris has 6 letters\n",
+      "panicked": false
+    },
+    "a50c2c80": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 21,
+      "rendered": "error[E0308]: mismatched types\n  --> src/main.rs:21:26\n   |\n21 |     let zoo = vec![Crab, Robot];\n   |                          ^^^^^ expected `Crab`, found `Robot`"
+    },
+    "a7dfe86a": {
+      "ok": false,
+      "errors": [
+        "E0502"
+      ],
+      "line": 15,
+      "rendered": "error[E0502]: cannot borrow `total` as immutable because it is also borrowed as mutable\n  --> src/main.rs:15:16\n   |\n13 |     let mut c = Counter { n: &mut total };\n   |                              ---------- mutable borrow occurs here\n14 |     c.bump();\n15 |     println!(\"{total}\");\n   |                ^^^^^ immutable borrow occurs here\n16 |     c.bump();\n   |     - mutable borrow later used here"
+    },
+    "a82fd848": {
+      "ok": true,
+      "errors": [],
+      "stdout": "2 2\n",
+      "panicked": false
+    },
+    "a849e0f5": {
+      "ok": false,
+      "errors": [
+        "E0726"
+      ],
+      "line": 5,
+      "rendered": "error[E0726]: implicit elided lifetime not allowed here\n --> src/main.rs:5:6\n  |\n5 | impl Excerpt {\n  |      ^^^^^^^ expected lifetime parameter\n  |\nhelp: indicate the anonymous lifetime\n  |\n5 | impl Excerpt<'_> {\n  |             ++++"
+    },
+    "a97dd7d0": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 7,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:9\n  |\n6 |     fn empty(&mut self) -> Vec<String> {\n  |                            ----------- expected `Vec<String>` because of return type\n7 |         &self.items\n  |         ^^^^^^^^^^^ expected `Vec<String>`, found `&Vec<String>`\n  |\n  = note: expected struct `Vec<_>`\n          found reference `&Vec<_>`\nhelp: consider removing the borrow\n  |\n7 -         &self.items\n7 +         self.items\n  |"
+    },
+    "a97e1c6d": {
+      "ok": false,
+      "errors": [
+        "E0597"
+      ],
+      "line": 5,
+      "rendered": "error[E0597]: `x` does not live long enough\n --> src/main.rs:5:13\n  |\n4 |         let x = 5;\n  |             - binding `x` declared here\n5 |         r = &x;\n  |             ^^ borrowed value does not live long enough\n6 |     }\n  |     - `x` dropped here while still borrowed\n7 |     println!(\"{r}\");\n  |                - borrow later used here"
+    },
+    "af698cb2": {
+      "ok": true,
+      "errors": [],
+      "stdout": "owned\n",
+      "panicked": false
+    },
+    "b1887456": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Call\n",
+      "panicked": false
+    },
+    "b40ce45c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "[6, 4, 2]\n",
+      "panicked": false
+    },
+    "b97192a8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "2\n",
+      "panicked": false
+    },
+    "ba75cad9": {
+      "ok": true,
+      "errors": [],
+      "stdout": "11 22\n",
+      "panicked": false
+    },
+    "baad3d52": {
+      "ok": true,
+      "errors": [],
+      "stdout": "a hi b ",
+      "panicked": false
+    },
+    "bded541c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "9\n",
+      "panicked": false
+    },
+    "be265120": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 8,
+      "rendered": "error[E0382]: borrow of moved value: `name`\n --> src/main.rs:8:16\n  |\n6 |     let name = String::from(\"ferris\");\n  |         ---- move occurs because `name` has type `String`, which does not implement the `Copy` trait\n7 |     let n = shout(name);\n  |                   ---- value moved here\n8 |     println!(\"{name} has {n} letters\");\n  |                ^^^^ value borrowed here after move\n  |\nnote: consider changing this parameter type in function `shout` to borrow instead if owning the value isn't necessary\n --> src/main.rs:1:13\n  |\n1 | fn shout(s: String) -> usize {\n  |    -----    ^^^^^^ this parameter takes ownership of the value\n  |    |\n  |    in this function\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n7 |     let n = shout(name.clone());\n  |                       ++++++++"
+    },
+    "be6b34a2": {
+      "ok": true,
+      "errors": [],
+      "stdout": "11 21 1\n",
+      "panicked": false
+    },
+    "c21922fd": {
+      "ok": false,
+      "errors": [
+        "E0596"
+      ],
+      "line": 3,
+      "rendered": "error[E0596]: cannot borrow `v` as mutable, as it is not declared as mutable\n --> src/main.rs:3:5\n  |\n3 |     v.push(1);\n  |     ^ cannot borrow as mutable\n  |\nhelp: consider changing this to be mutable\n  |\n2 |     let mut v = Vec::new();\n  |         +++"
+    },
+    "c236933f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "ferris\n",
+      "panicked": false
+    },
+    "c272a41e": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 17,
+      "rendered": "error[E0599]: no associated function or constant named `area` found for struct `Square` in the current scope\n  --> src/main.rs:17:36\n   |\n 6 |     pub struct Square(pub u32);\n   |     ----------------- associated function or constant `area` not found for this struct\n...\n17 |     println!(\"{}\", shapes::Square::area(&s));\n   |                                    ^^^^ associated function or constant not found in `Square`\n   |\n   = help: items from traits can only be used if the trait is in scope\nhelp: trait `Area` which provides `area` is implemented but not in scope; perhaps you want to import it\n   |\n 1 + use crate::shapes::Area;\n   |"
+    },
+    "c5efaf2a": {
+      "ok": true,
+      "errors": [],
+      "stdout": "borrow\n",
+      "panicked": false
+    },
+    "c795b0da": {
+      "ok": true,
+      "errors": [],
+      "stdout": "click beep ",
+      "panicked": false
+    },
+    "c95bb17f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "kelp\n",
+      "panicked": false
+    },
+    "ca82748a": {
+      "ok": true,
+      "errors": [],
+      "stdout": "0 2\n",
+      "panicked": false
+    },
+    "cb353035": {
+      "ok": false,
+      "errors": [
+        "E0621"
+      ],
+      "line": 2,
+      "rendered": "error[E0621]: explicit lifetime required in the type of `b`\n --> src/main.rs:2:39\n  |\n2 |     if a.len() > b.len() { a } else { b }\n  |                                       ^ lifetime `'a` required\n  |\nhelp: add explicit lifetime `'a` to the type of `b`\n  |\n1 | fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {\n  |                                ++"
+    },
+    "cb5feaac": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 4,
+      "rendered": "error[E0277]: `Option<&String>` doesn't implement `std::fmt::Display`\n --> src/main.rs:4:15\n  |\n4 |     println!(\"{first}\");\n  |               ^^^^^^^ `Option<&String>` cannot be formatted with the default formatter\n  |\n  = help: the trait `std::fmt::Display` is not implemented for `Option<&String>`\n  = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead"
+    },
+    "cd1b63df": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 16,
+      "rendered": "error[E0599]: no method named `speak` found for struct `Rock` in the current scope\n  --> src/main.rs:16:25\n   |\n 6 | struct Rock;\n   | ----------- method `speak` not found for this struct\n...\n16 |     println!(\"{}\", Rock.speak());\n   |                         ^^^^^ method not found in `Rock`\n   |\n   = help: items from traits can only be used if the trait is implemented and in scope\nnote: `Speak` defines an item `speak`, perhaps you need to implement it\n  --> src/main.rs:1:1\n   |\n 1 | trait Speak {\n   | ^^^^^^^^^^^"
+    },
+    "d0c06306": {
+      "ok": false,
+      "errors": [
+        "E0502"
+      ],
+      "line": 4,
+      "rendered": "error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable\n --> src/main.rs:4:5\n  |\n3 |     let first = &v[0];\n  |                  - immutable borrow occurs here\n4 |     v.push(4);\n  |     ^^^^^^^^^ mutable borrow occurs here\n5 |     println!(\"{first}\");\n  |                ----- immutable borrow later used here"
+    },
+    "d1e4ffe5": {
+      "ok": true,
+      "errors": [],
+      "stdout": "I live forever\n",
+      "panicked": false
+    },
+    "d4893fa5": {
+      "ok": false,
+      "errors": [
+        "E0507"
+      ],
+      "line": 4,
+      "rendered": "error[E0507]: cannot move out of `r` as enum variant `Some` which is behind a shared reference\n --> src/main.rs:4:11\n  |\n4 |     match *r {\n  |           ^^\n5 |         Some(s) => println!(\"{s}\"),\n  |              - data moved here because `s` has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider removing the dereference here\n  |\n4 -     match *r {\n4 +     match r {\n  |"
+    },
+    "d6c5f01f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "42 and 42\n",
+      "panicked": false
+    },
+    "d6d1ddfd": {
+      "ok": false,
+      "errors": [
+        "E0502"
+      ],
+      "line": 4,
+      "rendered": "error[E0502]: cannot borrow `count` as immutable because it is also borrowed as mutable\n --> src/main.rs:4:16\n  |\n3 |     let mut inc = || count += 1;\n  |                   -- ----- first borrow occurs due to use of `count` in closure\n  |                   |\n  |                   mutable borrow occurs here\n4 |     println!(\"{count}\");\n  |                ^^^^^ immutable borrow occurs here\n5 |     inc();\n  |     --- mutable borrow later used here"
+    },
+    "d9bcad9c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:6:15:\nRefCell already borrowed\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
+    "d9d33836": {
+      "ok": false,
+      "errors": [
+        "E0499"
+      ],
+      "line": 4,
+      "rendered": "error[E0499]: cannot borrow `score` as mutable more than once at a time\n --> src/main.rs:4:13\n  |\n3 |     let a = &mut score;\n  |             ---------- first mutable borrow occurs here\n4 |     let b = &mut score;\n  |             ^^^^^^^^^^ second mutable borrow occurs here\n5 |     *a += 1;\n  |     ------- first borrow later used here"
+    },
+    "df111acf": {
+      "ok": true,
+      "errors": [],
+      "stdout": "HELLO\n",
+      "panicked": false
+    },
+    "e0f966c0": {
+      "ok": false,
+      "errors": [
+        "E0502"
+      ],
+      "line": 4,
+      "rendered": "error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable\n --> src/main.rs:4:5\n  |\n3 |     let word = &s[..5];\n  |                 - immutable borrow occurs here\n4 |     s.clear();\n  |     ^^^^^^^^^ mutable borrow occurs here\n5 |     println!(\"{word}\");\n  |                ---- immutable borrow later used here"
+    },
+    "e388f039": {
+      "ok": true,
+      "errors": [],
+      "stdout": "c\n",
+      "panicked": false
+    },
+    "e5f8368d": {
+      "ok": false,
+      "errors": [
+        "E0369"
+      ],
+      "line": 2,
+      "rendered": "error[E0369]: binary operation `>` cannot be applied to type `T`\n --> src/main.rs:2:10\n  |\n2 |     if a > b { a } else { b }\n  |        - ^ - T\n  |        |\n  |        T\n  |\nhelp: consider restricting type parameter `T` with trait `PartialOrd`\n  |\n1 | fn largest<T: std::cmp::PartialOrd>(a: T, b: T) -> T {\n  |             ++++++++++++++++++++++"
+    },
+    "e8c42dcc": {
+      "ok": false,
+      "errors": [
+        "lifetime may not live long enough"
+      ],
+      "line": 16,
+      "rendered": "error: lifetime may not live long enough\n  --> src/main.rs:16:5\n   |\n15 | fn boxed(phrase: &str) -> Box<dyn Speak + 'static> {\n   |                  - let's call the lifetime of this reference `'1`\n16 |     Box::new(Parrot { phrase })\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ returning this value requires that `'1` must outlive `'static`\n   |\nhelp: consider changing the trait object's explicit `'static` bound to the lifetime of argument `phrase`\n   |\n15 - fn boxed(phrase: &str) -> Box<dyn Speak + 'static> {\n15 + fn boxed(phrase: &str) -> Box<dyn Speak + '_> {\n   |\nhelp: alternatively, add an explicit `'static` bound to this reference\n   |\n15 | fn boxed(phrase: &'static str) -> Box<dyn Speak + 'static> {\n   |                   +++++++"
+    },
+    "ec21b30c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "21\n",
+      "panicked": false
+    },
+    "eead3d3b": {
+      "ok": false,
+      "errors": [
+        "E0106"
+      ],
+      "line": 1,
+      "rendered": "error[E0106]: missing lifetime specifier\n --> src/main.rs:1:33\n  |\n1 | fn longest(a: &str, b: &str) -> &str {\n  |               ----     ----     ^ expected named lifetime parameter\n  |\n  = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `a` or `b`\nhelp: consider introducing a named lifetime parameter\n  |\n1 | fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {\n  |           ++++     ++          ++          ++"
+    },
+    "f9449ac0": {
+      "ok": true,
+      "errors": [],
+      "stdout": "4 3\n",
+      "panicked": false
+    },
+    "fd58723f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "100 2\n",
+      "panicked": false
+    },
+    "fe8edd1b": {
+      "ok": false,
+      "errors": [
+        "E0117"
+      ],
+      "line": 3,
+      "rendered": "error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate\n --> src/main.rs:3:1\n  |\n3 | impl fmt::Display for Vec<u32> {\n  | ^^^^^^^^^^^^^^^^^^^^^^--------\n  |                       |\n  |                       `Vec` is not defined in the current crate\n  |\n  = note: impl doesn't have any local type before any uncovered type parameters\n  = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules\n  = note: define and implement a trait or new type instead"
+    }
+  }
+}
