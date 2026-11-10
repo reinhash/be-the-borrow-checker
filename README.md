@@ -10,6 +10,11 @@ asks one of three things:
 
 After every answer the game shows an explanation and the real `rustc` output.
 
+The chapters follow the order of [The Rust Programming Language](https://doc.rust-lang.org/book/)
+("the book"), and each one names the book chapters it draws on. The chapters
+about tooling and the longer projects are covered through the language
+features they introduce, since a quiz question has to be one short program.
+
 Play it at <https://reinhash.com/demos/be-the-borrow-checker/>.
 
 ## Every answer is checked by rustc

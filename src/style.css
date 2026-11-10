@@ -163,6 +163,11 @@ pre {
 p code,
 .lede code,
 .prompt code,
+.foot a {
+  color: var(--text-soft);
+  text-underline-offset: 2px;
+}
+
 .foot code {
   font-size: 0.88em;
   padding: 0.08em 0.32em;

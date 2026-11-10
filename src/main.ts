@@ -304,7 +304,7 @@ function renderHome(): string {
         <span class="ch-body">
           <span class="ch-name">${prose(c.name)}</span>
           <span class="ch-blurb">${escapeHtml(c.blurb)}</span>
-          <span class="ch-meta">${count} questions${best ? ` · best ${best.score} ${starsHtml(best.stars)}` : ""}</span>
+          <span class="ch-meta">${escapeHtml(c.book)} · ${count} questions${best ? ` · best ${best.score} ${starsHtml(best.stars)}` : ""}</span>
         </span>
         <span class="ch-go" aria-hidden="true">→</span>
       </button>
@@ -330,6 +330,8 @@ function renderHome(): string {
     <footer class="foot">
       Every answer was checked by the compiler. All ${programs} programs were compiled, and the ones that build were run, with
       <code>${escapeHtml(VERIFIED.rustc.replace(/ \(.*\)/, ""))}</code>, edition ${VERIFIED.edition}. The error output you see is rustc's own.
+      The chapters follow <a href="https://doc.rust-lang.org/book/">The Rust Programming Language</a>, and the quiz is open source:
+      <a href="https://github.com/reinhash/be-the-borrow-checker">questions and code on GitHub</a>.
     </footer>
   </div>`;
 }

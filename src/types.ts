@@ -51,6 +51,8 @@ export type Question = Verdict | Output | Fix;
 export interface Chapter {
   id: string;
   number: string;
+  /** Which chapters of The Rust Programming Language this draws on, e.g. "Book ch. 4". */
+  book: string;
   name: string;
   blurb: string;
   questions: Question[];

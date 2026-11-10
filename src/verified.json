@@ -11,11 +11,48 @@
       "line": 5,
       "rendered": "error[E0308]: mismatched types\n --> src/main.rs:5:9\n  |\n4 |     match r.unwrap() {\n  |           ---------- this expression has type `String`\n5 |         Some(s) => println!(\"{s}\"),\n  |         ^^^^^^^ expected `String`, found `Option<_>`\n  |\n  = note: expected struct `String`\n               found enum `Option<_>`\n\nerror[E0308]: mismatched types\n   --> src/main.rs:6:9\n    |\n  4 |     match r.unwrap() {\n    |           ---------- this expression has type `String`\n  5 |         Some(s) => println!(\"{s}\"),\n  6 |         None => {}\n    |         ^^^^\n    |         |\n    |         expected `String`, found `Option<_>`\n    |         `None` is interpreted as a unit variant, not a new binding\n    |\n   ::: ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:601:5\n    |\n601 |     None,\n    |     ---- unit variant defined here\n    |\n    = note: expected struct `String`\n                 found enum `Option<_>`\nhelp: introduce a new binding instead\n    |\n  6 -         None => {}\n  6 +         other_none => {}\n    |"
     },
+    "66567523": {
+      "ok": false,
+      "errors": [
+        "E0425",
+        "E0433"
+      ],
+      "line": 5,
+      "rendered": "error[E0425]: cannot find type `HashMap` in this scope\n --> src/main.rs:5:16\n  |\n5 |         let m: HashMap<u8, u8> = HashMap::new();\n  |                ^^^^^^^ not found in this scope\n  |\nhelp: consider importing one of these structs\n  |\n4 +     use crate::HashMap;\n  |\n4 +     use std::collections::HashMap;\n  |\n\nerror[E0433]: cannot find type `HashMap` in this scope\n --> src/main.rs:5:34\n  |\n5 |         let m: HashMap<u8, u8> = HashMap::new();\n  |                                  ^^^^^^^ use of undeclared type `HashMap`\n  |\nhelp: consider importing one of these structs\n  |\n4 +     use crate::HashMap;\n  |\n4 +     use std::collections::HashMap;\n  |"
+    },
+    "69335865": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Ok(8) true\n",
+      "panicked": false
+    },
+    "002aee75": {
+      "ok": true,
+      "errors": [],
+      "stdout": "[1, 2] 2\n",
+      "panicked": false
+    },
     "02302ea3": {
       "ok": true,
       "errors": [],
       "stdout": "hi b a ",
       "panicked": false
+    },
+    "02eaff1b": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 4,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:4:18\n  |\n4 |     let b = same(\"five\");\n  |             ---- ^^^^^^ expected integer, found `&str`\n  |             |\n  |             arguments to this function are incorrect\n  |\nnote: expected because the closure was earlier called with an argument of type `{integer}`\n --> src/main.rs:3:18\n  |\n3 |     let a = same(5);\n  |             ---- ^ expected because this argument is of type `{integer}`\n  |             |\n  |             in this closure call\nnote: closure parameter defined here\n --> src/main.rs:2:17\n  |\n2 |     let same = |x| x;\n  |                 ^"
+    },
+    "033847c1": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 3,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:3:8\n  |\n3 |     if number {\n  |        ^^^^^^ expected `bool`, found integer"
     },
     "033be142": {
       "ok": true,
@@ -29,11 +66,55 @@
       "stdout": "right\nleft\n",
       "panicked": false
     },
+    "046ae2ae": {
+      "ok": false,
+      "errors": [
+        "E0616"
+      ],
+      "line": 17,
+      "rendered": "error[E0616]: field `balance` of struct `Account` is private\n  --> src/main.rs:17:34\n   |\n17 |     println!(\"{} {}\", a.owner, a.balance);\n   |                                  ^^^^^^^ private field"
+    },
+    "04e8c68c": {
+      "ok": false,
+      "errors": [
+        "E0072"
+      ],
+      "line": 1,
+      "rendered": "error[E0072]: recursive type `List` has infinite size\n --> src/main.rs:1:1\n  |\n1 | enum List {\n  | ^^^^^^^^^\n2 |     Cons(i32, List),\n  |               ---- recursive without indirection\n  |\nhelp: insert some indirection (e.g., a `Box`, `Rc`, or `&`) to break the cycle\n  |\n2 |     Cons(i32, Box<List>),\n  |               ++++    +"
+    },
     "0569d4ff": {
       "ok": true,
       "errors": [],
       "stdout": "ab\n",
       "panicked": false
+    },
+    "07b0a9d1": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 15,
+      "rendered": "error[E0599]: no method named `len` found for struct `Point<{integer}>` in the current scope\n  --> src/main.rs:15:34\n   |\n 1 | struct Point<T> {\n   | --------------- method `len` not found for this struct\n...\n15 |     println!(\"{} {}\", a.len(), b.len());\n   |                                  ^^^ method not found in `Point<{integer}>`\n   |\n   = note: the method was found for `Point<f32>`\n   = help: items from traits can only be used if the trait is implemented and in scope\n   = note: the following trait defines an item `len`, perhaps you need to implement it:\n           candidate #1: `ExactSizeIterator`"
+    },
+    "09b6dc99": {
+      "ok": true,
+      "errors": [],
+      "stdout": "1\n",
+      "panicked": false
+    },
+    "09bc040c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "published\n",
+      "panicked": false
+    },
+    "09d6b9aa": {
+      "ok": false,
+      "errors": [
+        "E0271"
+      ],
+      "line": 5,
+      "rendered": "error[E0271]: type mismatch resolving `<f64 as FromStr>::Err == ParseIntError`\n --> src/main.rs:5:24\n  |\n5 |     let f: f64 = \"0.5\".parse()?;\n  |                        ^^^^^ expected `ParseIntError`, found `ParseFloatError`"
     },
     "0bdff0a1": {
       "ok": true,
@@ -73,10 +154,74 @@
       "line": 21,
       "rendered": "error[E0308]: `if` and `else` have incompatible types\n  --> src/main.rs:21:30\n   |\n21 |     if loud { Robot } else { Crab }\n   |               -----          ^^^^ expected `Robot`, found `Crab`\n   |               |\n   |               expected because of this\n   |\nhelp: you could change the return type to be a boxed trait object\n   |\n20 - fn pick(loud: bool) -> impl Speak {\n20 + fn pick(loud: bool) -> Box<dyn Speak> {\n   |\nhelp: if you change the return type to expect trait objects, box the returned expressions\n   |\n21 |     if loud { Box::new(Robot) } else { Box::new(Crab) }\n   |               +++++++++     +          +++++++++    +"
     },
+    "1587459d": {
+      "ok": true,
+      "errors": [],
+      "stdout": "hi\n",
+      "panicked": false
+    },
+    "16cd73b1": {
+      "ok": false,
+      "errors": [
+        "E0369"
+      ],
+      "line": 4,
+      "rendered": "error[E0369]: binary operation `==` cannot be applied to type `Point`\n --> src/main.rs:4:28\n  |\n4 |     let same = Point(1, 2) == Point(1, 2);\n  |                ----------- ^^ ----------- Point\n  |                |\n  |                Point\n  |\nnote: an implementation of `PartialEq` might be missing for `Point`\n --> src/main.rs:1:1\n  |\n1 | struct Point(i32, i32);\n  | ^^^^^^^^^^^^ must implement `PartialEq`\nhelp: consider annotating `Point` with `#[derive(PartialEq)]`\n  |\n1 + #[derive(PartialEq)]\n2 | struct Point(i32, i32);\n  |"
+    },
+    "1829acfa": {
+      "ok": true,
+      "errors": [],
+      "stdout": "8\n",
+      "panicked": false
+    },
+    "182bca71": {
+      "ok": false,
+      "errors": [
+        "E0384"
+      ],
+      "line": 3,
+      "rendered": "error[E0384]: cannot assign twice to immutable variable `x`\n --> src/main.rs:3:5\n  |\n2 |     let x = 5;\n  |         - first assignment to `x`\n3 |     x = 6;\n  |     ^^^^^ cannot assign twice to immutable variable\n  |\nhelp: consider making this binding mutable\n  |\n2 |     let mut x = 5;\n  |         +++"
+    },
+    "18b1c30c": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 4,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:4:17\n  |\n4 |     let c = a + b;\n  |                 ^ expected `&str`, found `String`\n  |\nhelp: consider borrowing here\n  |\n4 |     let c = a + &b;\n  |                 +"
+    },
     "19c10d5f": {
       "ok": true,
       "errors": [],
       "stdout": "[10, 20, 2]\n",
+      "panicked": false
+    },
+    "1a72485a": {
+      "ok": false,
+      "errors": [
+        "E0603"
+      ],
+      "line": 11,
+      "rendered": "error[E0603]: function import `red` is private\n  --> src/main.rs:11:25\n   |\n11 |     println!(\"{}\", art::red());\n   |                         ^^^ private function import\n   |\nnote: the function import `red` is defined here...\n  --> src/main.rs:7:9\n   |\n 7 |     use self::kinds::red;\n   |         ^^^^^^^^^^^^^^^^\nnote: ...and refers to the function `red` which is defined here\n  --> src/main.rs:3:9\n   |\n 3 |         pub fn red() -> &'static str {\n   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ you could import this directly\nhelp: consider importing this function instead\n   |\n11 -     println!(\"{}\", art::red());\n11 +     println!(\"{}\", crate::art::kinds::red());\n   |\nhelp: import `red` directly\n   |\n11 -     println!(\"{}\", art::red());\n11 +     println!(\"{}\", self::kinds::red());\n   |"
+    },
+    "1c61bd6f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "soup salad ",
+      "panicked": false
+    },
+    "1d26e33c": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 9,
+      "rendered": "error[E0277]: `Point` doesn't implement `std::fmt::Display`\n --> src/main.rs:9:23\n  |\n9 |     println!(\"{} {}\", p, p.x + p.y);\n  |               --      ^ `Point` cannot be formatted with the default formatter\n  |               |\n  |               required by this formatting parameter\n  |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n --> src/main.rs:2:1\n  |\n2 | struct Point {\n  | ^^^^^^^^^^^^\n  = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead"
+    },
+    "1dffc8da": {
+      "ok": true,
+      "errors": [],
+      "stdout": "[a, b]\n",
       "panicked": false
     },
     "1e13ede6": {
@@ -87,6 +232,38 @@
       "line": 7,
       "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:19\n  |\n7 |     let n = shout(&name);\n  |             ----- ^^^^^ expected `String`, found `&String`\n  |             |\n  |             arguments to this function are incorrect\n  |\nnote: function defined here\n --> src/main.rs:1:4\n  |\n1 | fn shout(s: String) -> usize {\n  |    ^^^^^ ---------\nhelp: consider removing the borrow\n  |\n7 -     let n = shout(&name);\n7 +     let n = shout(name);\n  |"
     },
+    "1f418fa4": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 7,
+      "rendered": "error[E0382]: borrow of moved value: `msg`\n --> src/main.rs:7:21\n  |\n5 |     let msg = String::from(\"ping\");\n  |         --- move occurs because `msg` has type `String`, which does not implement the `Copy` trait\n6 |     tx.send(msg).unwrap();\n  |             --- value moved here\n7 |     println!(\"sent {msg}\");\n  |                     ^^^ value borrowed here after move\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n6 |     tx.send(msg.clone()).unwrap();\n  |                ++++++++"
+    },
+    "1f41fa22": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 7,
+      "rendered": "error[E0382]: borrow of moved value: `name`\n --> src/main.rs:7:16\n  |\n4 |     let name = String::from(\"Ann\");\n  |         ---- move occurs because `name` has type `String`, which does not implement the `Copy` trait\n5 |     let mut ages = HashMap::new();\n6 |     ages.insert(name, 30);\n  |                 ---- value moved here\n7 |     println!(\"{name} is {}\", ages.len());\n  |                ^^^^ value borrowed here after move\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n6 |     ages.insert(name.clone(), 30);\n  |                     ++++++++"
+    },
+    "1f783208": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 3,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:3:14\n  |\n2 |     let mut spaces = \"   \";\n  |                      ----- expected due to this value\n3 |     spaces = spaces.len();\n  |              ^^^^^^^^^^^^ expected `&str`, found `usize`"
+    },
+    "208ac95e": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 9,
+      "rendered": "error[E0277]: `Point` doesn't implement `std::fmt::Display`\n --> src/main.rs:9:15\n  |\n9 |     println!(\"{p} {}\", p.x + p.y);\n  |               ^^^ `Point` cannot be formatted with the default formatter\n  |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n --> src/main.rs:2:1\n  |\n2 | struct Point {\n  | ^^^^^^^^^^^^\n  = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead"
+    },
     "239bd2c2": {
       "ok": false,
       "errors": [
@@ -94,6 +271,30 @@
       ],
       "line": 3,
       "rendered": "error[E0507]: cannot move out of index of `Vec<String>`\n --> src/main.rs:3:25\n  |\n3 |     let first: String = names[0];\n  |                         ^^^^^^^^ move occurs because value has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider borrowing here\n  |\n3 |     let first: String = &names[0];\n  |                         +\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n3 |     let first: String = names[0].clone();\n  |                                 ++++++++"
+    },
+    "23a46c7a": {
+      "ok": false,
+      "errors": [
+        "E0277",
+        "E0277",
+        "E0277"
+      ],
+      "line": 1,
+      "rendered": "error[E0277]: the size for values of type `str` cannot be known at compilation time\n --> src/main.rs:1:12\n  |\n1 | fn show(s: str) {\n  |            ^^^ doesn't have a size known at compile-time\n  |\n  = help: the trait `Sized` is not implemented for `str`\nhelp: function arguments must have a statically known size, borrowed types always have a known size\n  |\n1 | fn show(s: &str) {\n  |            +\n\nerror[E0277]: the size for values of type `str` cannot be known at compilation time\n --> src/main.rs:2:15\n  |\n2 |     println!(\"{s}\");\n  |               ^^^ doesn't have a size known at compile-time\n  |\n  = help: the trait `Sized` is not implemented for `str`\n\nerror[E0277]: the size for values of type `str` cannot be known at compilation time\n --> src/main.rs:6:10\n  |\n6 |     show(*\"hi\");\n  |          ^^^^^ doesn't have a size known at compile-time\n  |\n  = help: the trait `Sized` is not implemented for `str`\n  = note: all function arguments must have a statically known size"
+    },
+    "26b44fd2": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 1,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:1:24\n  |\n1 | fn plus_one(x: i32) -> i32 {\n  |    --------            ^^^ expected `i32`, found `()`\n  |    |\n  |    implicitly returns `()` as its body has no tail or `return` expression\n2 |     x + 1;\n  |          - help: remove this semicolon to return this value"
+    },
+    "26cc8e61": {
+      "ok": true,
+      "errors": [],
+      "stdout": "7\n",
+      "panicked": false
     },
     "29542f1b": {
       "ok": false,
@@ -111,6 +312,22 @@
       "line": 17,
       "rendered": "error[E0425]: cannot find function `area` in module `shapes`\n  --> src/main.rs:17:28\n   |\n17 |     println!(\"{}\", shapes::area(&s));\n   |                            ^^^^ not found in `shapes`"
     },
+    "2cdc2834": {
+      "ok": false,
+      "errors": [
+        "E0603"
+      ],
+      "line": 8,
+      "rendered": "error[E0603]: function `cook` is private\n --> src/main.rs:8:29\n  |\n8 |     println!(\"{}\", kitchen::cook());\n  |                             ^^^^ private function\n  |\nnote: the function `cook` is defined here\n --> src/main.rs:2:5\n  |\n2 |     const fn cook() -> &'static str {\n  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
+    "2e704c09": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 5,
+      "rendered": "error[E0382]: borrow of moved value: `words`\n   --> src/main.rs:5:24\n    |\n  2 |     let words = vec![String::from(\"hi\")];\n    |         ----- move occurs because `words` has type `Vec<String>`, which does not implement the `Copy` trait\n  3 |     let n: usize =\n  4 |         words.into_iter().map(|w| w.len()).sum();\n    |               ----------- `words` moved due to this method call\n  5 |     println!(\"{n} {}\", words.len());\n    |                        ^^^^^ value borrowed here after move\n    |\nnote: `into_iter` takes ownership of the receiver `self`, which moves `words`\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/iter/traits/collect.rs:312:18\n    |\n312 |     fn into_iter(self) -> Self::IntoIter;\n    |                  ^^^^\nhelp: you can `clone` the value and consume it, but this might not be your desired behavior\n    |\n  4 |         words.clone().into_iter().map(|w| w.len()).sum();\n    |              ++++++++"
+    },
     "2edcaacc": {
       "ok": false,
       "errors": [
@@ -127,6 +344,49 @@
       "line": 7,
       "rendered": "error[E0621]: explicit lifetime required in the type of `item`\n --> src/main.rs:7:9\n  |\n7 |         self.item = item;\n  |         ^^^^^^^^^^^^^^^^ lifetime `'a` required\n  |\nhelp: add explicit lifetime `'a` to the type of `item`\n  |\n6 -     fn set(&mut self, item: &'_ str) {\n6 +     fn set(&mut self, item: &'a str) {\n  |"
     },
+    "31d31304": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 7,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:26\n  |\n7 |     println!(\"{}\", twice(|x| x + step, 5));\n  |                    ----- ^^^^^^^^^^^^ expected fn pointer, found closure\n  |                    |\n  |                    arguments to this function are incorrect\n  |\n  = note: expected fn pointer `fn(i32) -> i32`\n                found closure `{closure@src/main.rs:7:26: 7:29}`\nnote: closures can only be coerced to `fn` types if they do not capture any variables\n --> src/main.rs:7:34\n  |\n7 |     println!(\"{}\", twice(|x| x + step, 5));\n  |                                  ^^^^ `step` captured here\nnote: function defined here\n --> src/main.rs:1:4\n  |\n1 | fn twice(f: fn(i32) -> i32, x: i32) -> i32 {\n  |    ^^^^^ -----------------"
+    },
+    "3214a666": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Ann 30\nBob 30\n",
+      "panicked": false
+    },
+    "357c094d": {
+      "ok": true,
+      "errors": [],
+      "stdout": "arms plane broom\n",
+      "panicked": false
+    },
+    "35eb6ce1": {
+      "ok": false,
+      "errors": [
+        "E0596"
+      ],
+      "line": 3,
+      "rendered": "error[E0596]: cannot borrow `inc` as mutable, as it is not declared as mutable\n --> src/main.rs:3:9\n  |\n3 |     let inc = || count += 1;\n  |         ^^^      ----- calling `inc` requires mutable binding due to mutable borrow of `count`\n  |         |\n  |         not mutable\n4 |     inc();\n  |     --- cannot borrow as mutable\n5 |     inc();\n  |     --- cannot borrow as mutable\n  |\nhelp: consider changing this to be mutable\n  |\n3 |     let mut inc = || count += 1;\n  |         +++"
+    },
+    "3630d435": {
+      "ok": false,
+      "errors": [
+        "E0603"
+      ],
+      "line": 8,
+      "rendered": "error[E0603]: function `cook` is private\n --> src/main.rs:8:29\n  |\n8 |     println!(\"{}\", kitchen::cook());\n  |                             ^^^^ private function\n  |\nnote: the function `cook` is defined here\n --> src/main.rs:2:5\n  |\n2 |     fn cook() -> &'static str {\n  |     ^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
+    "36b0ca91": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:6:25:\nno entry found for key\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
     "36d6f737": {
       "ok": false,
       "errors": [
@@ -134,6 +394,12 @@
       ],
       "line": 7,
       "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:19\n  |\n7 |     let n = shout(name.as_str());\n  |             ----- ^^^^^^^^^^^^^ expected `String`, found `&str`\n  |             |\n  |             arguments to this function are incorrect\n  |\nnote: function defined here\n --> src/main.rs:1:4\n  |\n1 | fn shout(s: String) -> usize {\n  |    ^^^^^ ---------\nhelp: try removing the method call\n  |\n7 -     let n = shout(name.as_str());\n7 +     let n = shout(name);\n  |"
+    },
+    "37871f4f": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Some(5) None\n",
+      "panicked": false
     },
     "38132a9a": {
       "ok": false,
@@ -175,6 +441,14 @@
       "line": 13,
       "rendered": "error[E0277]: `Point` doesn't implement `std::fmt::Display`\n  --> src/main.rs:13:10\n   |\n13 |     show(Point { x: 1 });\n   |     ---- ^^^^^^^^^^^^^^ unsatisfied trait bound\n   |     |\n   |     required by a bound introduced by this call\n   |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n  --> src/main.rs:3:1\n   |\n 3 | struct Point {\n   | ^^^^^^^^^^^^\nnote: required by a bound in `show`\n  --> src/main.rs:7:12\n   |\n 7 | fn show<T: Display>(t: T) {\n   |            ^^^^^^^ required by this bound in `show`"
     },
+    "3d0b6231": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 8,
+      "rendered": "error[E0382]: use of moved value: `n`\n --> src/main.rs:8:36\n  |\n5 |     let n = Mutex::new(0);\n  |         - move occurs because `n` has type `std::sync::Mutex<i32>`, which does not implement the `Copy` trait\n6 |     let mut handles = Vec::new();\n7 |     for _ in 0..4 {\n  |     ------------- inside of this loop\n8 |         handles.push(thread::spawn(move || {\n  |                                    ^^^^^^^ value moved into closure here, in previous iteration of loop\n9 |             *n.lock().unwrap() += 10;\n  |              - use occurs due to use in closure"
+    },
     "3e14ad6b": {
       "ok": false,
       "errors": [
@@ -189,6 +463,22 @@
       "stdout": "CALL ME\n",
       "panicked": false
     },
+    "40e7e13d": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 4,
+      "rendered": "error[E0277]: `*const i32` doesn't implement `std::fmt::Display`\n   --> src/main.rs:4:20\n    |\n  4 |     println!(\"{}\", p);\n    |               --   ^ `*const i32` cannot be formatted with the default formatter\n    |               |\n    |               required by this formatting parameter\n    |\n    = help: the trait `std::fmt::Display` is not implemented for `*const i32`\n    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead\nhelp: the trait `std::fmt::Display` is implemented for `i32`\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/fmt/num.rs:155:9\n    |\n155 |         impl fmt::Display for $Signed {\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n...\n600 |     impl_Display!(i8, u8, i16, u16, i32, u32, i64, u64, isize, usize; as u64 into display_u64);\n    |     ------------------------------------------------------------------------------------------ in this macro invocation\n    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `impl_Display` (in Nightly builds, run with -Z macro-backtrace for more info)"
+    },
+    "410900ad": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 9,
+      "rendered": "error[E0277]: `Point` doesn't implement `std::fmt::Display`\n --> src/main.rs:9:15\n  |\n9 |     println!(\"{p:#} {}\", p.x + p.y);\n  |               ^^^^^ `Point` cannot be formatted with the default formatter\n  |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n --> src/main.rs:2:1\n  |\n2 | struct Point {\n  | ^^^^^^^^^^^^\n  = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead"
+    },
     "424570c4": {
       "ok": false,
       "errors": [
@@ -196,6 +486,12 @@
       ],
       "line": 25,
       "rendered": "error[E0308]: mismatched types\n  --> src/main.rs:25:17\n   |\n25 |     chat(&Crab, &Robot);\n   |     ----        ^^^^^^ expected `&Crab`, found `&Robot`\n   |     |\n   |     arguments to this function are incorrect\n   |\n   = note: expected reference `&Crab`\n              found reference `&Robot`\nnote: function defined here\n  --> src/main.rs:20:4\n   |\n20 | fn chat<T: Speak>(a: &T, b: &T) {\n   |    ^^^^                  -----"
+    },
+    "45aae9ba": {
+      "ok": true,
+      "errors": [],
+      "stdout": "4\n",
+      "panicked": false
     },
     "47cccd90": {
       "ok": false,
@@ -239,6 +535,47 @@
       "ok": true,
       "errors": [],
       "stdout": "3 2\n",
+      "panicked": false
+    },
+    "542a6861": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Point { x: 1, y: 2 } 3\n",
+      "panicked": false
+    },
+    "5544355d": {
+      "ok": false,
+      "errors": [
+        "E0728"
+      ],
+      "line": 6,
+      "rendered": "error[E0728]: `await` is only allowed inside `async` functions and blocks\n --> src/main.rs:6:22\n  |\n5 | fn main() {\n  | --------- this is not `async`\n6 |     let n = answer().await;\n  |                      ^^^^^ only allowed inside `async` functions and blocks"
+    },
+    "55869e82": {
+      "ok": false,
+      "errors": [
+        "E0423"
+      ],
+      "line": 2,
+      "rendered": "error[E0423]: expected function, found macro `println`\n --> src/main.rs:2:5\n  |\n2 |     println(\"hello\");\n  |     ^^^^^^^ not a function\n  |\nhelp: use `!` to invoke the macro\n  |\n2 |     println!(\"hello\");\n  |            +"
+    },
+    "57e89a81": {
+      "ok": true,
+      "errors": [],
+      "stdout": "42\n",
+      "panicked": false
+    },
+    "589f59d1": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:3:27:\ncalled `Option::unwrap()` on a `None` value\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
+    "58c2e555": {
+      "ok": true,
+      "errors": [],
+      "stdout": "5\n",
       "panicked": false
     },
     "5971e8cf": {
@@ -293,6 +630,36 @@
       "stdout": "new\n",
       "panicked": false
     },
+    "65f3ef65": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 5,
+      "rendered": "error[E0382]: use of moved value: `consume`\n --> src/main.rs:5:5\n  |\n4 |     consume();\n  |     --------- `consume` moved due to this call\n5 |     consume();\n  |     ^^^^^^^ value used here after move\n  |\nnote: closure cannot be invoked more than once because it moves the variable `s` out of its environment\n --> src/main.rs:3:27\n  |\n3 |     let consume = || drop(s);\n  |                           ^\nnote: this value implements `FnOnce`, which causes it to be moved when called\n --> src/main.rs:4:5\n  |\n4 |     consume();\n  |     ^^^^^^^"
+    },
+    "6609923d": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 7,
+      "rendered": "error[E0382]: borrow of partially moved value: `name`\n --> src/main.rs:7:16\n  |\n4 |         Some(n) => println!(\"{n}\"),\n  |              - value partially moved here\n...\n7 |     println!(\"{name:?}\");\n  |                ^^^^ value borrowed here after partial move\n  |\n  = note: partial move occurs because value has type `String`, which does not implement the `Copy` trait\nhelp: borrow this binding in the pattern to avoid moving the value\n  |\n4 |         Some(ref n) => println!(\"{n}\"),\n  |              +++"
+    },
+    "671610fa": {
+      "ok": false,
+      "errors": [
+        "E0368"
+      ],
+      "line": 4,
+      "rendered": "error[E0368]: binary assignment operation `*=` cannot be applied to type `&mut {integer}`\n --> src/main.rs:4:9\n  |\n4 |         x *= 2;\n  |         -^^^^^\n  |         |\n  |         cannot use `*=` on type `&mut {integer}`\n  |\nhelp: `*=` can be used on `{integer}` if you dereference the left-hand side\n  |\n4 |         *x *= 2;\n  |         +"
+    },
+    "6768c93d": {
+      "ok": true,
+      "errors": [],
+      "stdout": "6\n",
+      "panicked": false
+    },
     "676cfec1": {
       "ok": false,
       "errors": [
@@ -310,6 +677,28 @@
       "line": 2,
       "rendered": "error[E0369]: binary operation `>` cannot be applied to type `T`\n --> src/main.rs:2:10\n  |\n2 |     if a > b { a } else { b }\n  |        - ^ - T\n  |        |\n  |        T\n  |\nhelp: consider further restricting type parameter `T` with trait `PartialOrd`\n  |\n1 | fn largest<T: Copy + std::cmp::PartialOrd>(a: T, b: T) -> T {\n  |                    ++++++++++++++++++++++"
     },
+    "6d172f32": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 9,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:9:26\n  |\n9 |     println!(\"{}\", climb(Feet(3)));\n  |                    ----- ^^^^^^^ expected `Meters`, found `Feet`\n  |                    |\n  |                    arguments to this function are incorrect\n  |\nnote: function defined here\n --> src/main.rs:4:4\n  |\n4 | fn climb(m: Meters) -> u32 {\n  |    ^^^^^ ---------"
+    },
+    "6d4a65c1": {
+      "ok": false,
+      "errors": [
+        "E0004"
+      ],
+      "line": 8,
+      "rendered": "error[E0004]: non-exhaustive patterns: `Coin::Dime` not covered\n  --> src/main.rs:8:11\n   |\n 8 |     match c {\n   |           ^ pattern `Coin::Dime` not covered\n   |\nnote: `Coin` defined here\n  --> src/main.rs:1:6\n   |\n 1 | enum Coin {\n   |      ^^^^\n...\n 4 |     Dime,\n   |     ---- not covered\n   = note: the matched value is of type `Coin`\nhelp: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown\n   |\n10 ~         Coin::Nickel => 5,\n11 ~         Coin::Dime => todo!(),\n   |"
+    },
+    "6e04f009": {
+      "ok": true,
+      "errors": [],
+      "stdout": "3\n",
+      "panicked": false
+    },
     "6ec9249f": {
       "ok": false,
       "errors": [
@@ -326,6 +715,12 @@
       "line": 2,
       "rendered": "error[E0106]: missing lifetime specifier\n --> src/main.rs:2:11\n  |\n2 |     part: &str,\n  |           ^ expected named lifetime parameter\n  |\nhelp: consider introducing a named lifetime parameter\n  |\n1 ~ struct Excerpt<'a> {\n2 ~     part: &'a str,\n  |"
     },
+    "6f9b50b8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "56\n",
+      "panicked": false
+    },
     "70de31c1": {
       "ok": false,
       "errors": [
@@ -338,6 +733,12 @@
       "ok": true,
       "errors": [],
       "stdout": "Ferris says hi, beep\n",
+      "panicked": false
+    },
+    "71f55b31": {
+      "ok": true,
+      "errors": [],
+      "stdout": "40\n",
       "panicked": false
     },
     "738b3e95": {
@@ -356,6 +757,21 @@
       "line": 16,
       "rendered": "error[E0597]: `e` does not live long enough\n  --> src/main.rs:16:13\n   |\n15 |         let e = Excerpt { part: &novel[..4] };\n   |             - binding `e` declared here\n16 |         p = e.part();\n   |             ^ borrowed value does not live long enough\n17 |     }\n   |     - `e` dropped here while still borrowed\n18 |     println!(\"{p}\");\n   |                - borrow later used here"
     },
+    "75c7af00": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:3:21:\nindex out of bounds: the len is 3 but the index is 7\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
+    "77c4fde7": {
+      "ok": false,
+      "errors": [
+        "E0133"
+      ],
+      "line": 4,
+      "rendered": "error[E0133]: dereference of raw pointer is unsafe and requires unsafe block\n --> src/main.rs:4:20\n  |\n4 |     println!(\"{}\", *p);\n  |                    ^^ dereference of raw pointer\n  |\n  = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior"
+    },
     "78612a9f": {
       "ok": false,
       "errors": [
@@ -363,6 +779,13 @@
       ],
       "line": 10,
       "rendered": "error: lifetime may not live long enough\n  --> src/main.rs:10:13\n   |\n 6 |     fn pick(&self, other: &str) -> &str {\n   |             -             - let's call the lifetime of this reference `'1`\n   |             |\n   |             let's call the lifetime of this reference `'2`\n...\n10 |             other\n   |             ^^^^^ method was supposed to return data with lifetime `'2` but it is returning data with lifetime `'1`\n   |\nhelp: consider introducing a named lifetime parameter and update trait if needed\n   |\n 6 |     fn pick<'a>(&self, other: &'a str) -> &'a str {\n   |            ++++                ++          ++"
+    },
+    "79927daa": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:4:20:\nindex out of bounds: the len is 3 but the index is 3\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
     },
     "79e132f5": {
       "ok": false,
@@ -377,6 +800,14 @@
       "errors": [],
       "stdout": "click beep\n",
       "panicked": false
+    },
+    "7bc4e6e3": {
+      "ok": false,
+      "errors": [
+        "E0252"
+      ],
+      "line": 2,
+      "rendered": "error[E0252]: the name `Result` is defined multiple times\n --> src/main.rs:2:5\n  |\n1 | use std::fmt::Result;\n  |     ---------------- previous import of the type `Result` here\n2 | use std::io::Result;\n  |     ^^^^^^^^^^^^^^^ `Result` reimported here\n  |\n  = note: `Result` must be defined only once in the type namespace of this module\nhelp: you can use `as` to change the binding name of the import\n  |\n2 | use std::io::Result as OtherResult;\n  |                     ++++++++++++++"
     },
     "7d811be0": {
       "ok": false,
@@ -394,6 +825,12 @@
       "line": 5,
       "rendered": "error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable\n --> src/main.rs:5:13\n  |\n3 |     for x in &v {\n  |              --\n  |              |\n  |              immutable borrow occurs here\n  |              immutable borrow later used here\n4 |         if *x == 2 {\n5 |             v.push(4);\n  |             ^^^^^^^^^ mutable borrow occurs here"
     },
+    "7e687a88": {
+      "ok": true,
+      "errors": [],
+      "stdout": "tic tictac\n",
+      "panicked": false
+    },
     "7e866757": {
       "ok": false,
       "errors": [
@@ -408,6 +845,14 @@
       "stdout": "1\n",
       "panicked": false
     },
+    "81f0f8a1": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 2,
+      "rendered": "error[E0277]: the `?` operator can only be used on `Result`s, not `Option`s, in a function that returns `Result`\n --> src/main.rs:2:22\n  |\n1 | fn first(v: &[i32]) -> Result<i32, String> {\n  | ------------------------------------------ this function returns a `Result`\n2 |     let x = v.first()?;\n  |                      ^ use `.ok_or(...)?` to provide an error compatible with `Result<i32, String>`"
+    },
     "825c2ab2": {
       "ok": false,
       "errors": [
@@ -415,6 +860,36 @@
       ],
       "line": 2,
       "rendered": "error[E0369]: binary operation `>` cannot be applied to type `T`\n --> src/main.rs:2:10\n  |\n2 |     if a > b { a } else { b }\n  |        - ^ - T\n  |        |\n  |        T\n  |\nhelp: consider further restricting type parameter `T` with trait `PartialOrd`\n  |\n1 | fn largest<T: PartialEq + std::cmp::PartialOrd>(a: T, b: T) -> T {\n  |                         ++++++++++++++++++++++"
+    },
+    "8354cae9": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 6,
+      "rendered": "error[E0277]: `Rc<i32>` cannot be sent between threads safely\n   --> src/main.rs:6:27\n    |\n  6 |       let h = thread::spawn(move || {\n    |               ------------- ^------\n    |               |             |\n    |  _____________|_____________within this `{closure@src/main.rs:6:27: 6:34}`\n    | |             |\n    | |             required by a bound introduced by this call\n  7 | |         println!(\"{n}\");\n  8 | |     });\n    | |_____^ `Rc<i32>` cannot be sent between threads safely\n    |\n    = help: within `{closure@src/main.rs:6:27: 6:34}`, the trait `Send` is not implemented for `Rc<i32>`\nnote: required because it's used within this closure\n   --> src/main.rs:6:27\n    |\n  6 |     let h = thread::spawn(move || {\n    |                           ^^^^^^^\nnote: required by a bound in `spawn`\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/thread/functions.rs:128:8\n    |\n125 | pub fn spawn<F, T>(f: F) -> JoinHandle<T>\n    |        ----- required by a bound in this function\n...\n128 |     F: Send + 'static,\n    |        ^^^^ required by this bound in `spawn`"
+    },
+    "83e9a1b0": {
+      "ok": false,
+      "errors": [
+        "E0284"
+      ],
+      "line": 2,
+      "rendered": "error[E0284]: type annotations needed\n --> src/main.rs:2:9\n  |\n2 |     let guess = \"42\".parse().unwrap();\n  |         ^^^^^        ----- type must be known at this point\n  |\n  = note: cannot satisfy `<_ as FromStr>::Err == _`\nhelp: consider giving `guess` an explicit type\n  |\n2 |     let guess: /* Type */ = \"42\".parse().unwrap();\n  |              ++++++++++++"
+    },
+    "8408f3ba": {
+      "ok": true,
+      "errors": [],
+      "stdout": "made done\n",
+      "panicked": false
+    },
+    "846a51ed": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 1,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:1:24\n  |\n1 | fn plus_one(x: i32) -> i32 {\n  |    --------            ^^^ expected `i32`, found `()`\n  |    |\n  |    implicitly returns `()` as its body has no tail or `return` expression\n  |\nnote: consider returning one of these bindings\n --> src/main.rs:1:13\n  |\n1 | fn plus_one(x: i32) -> i32 {\n  |             ^\n2 |     let y = x + 1;\n  |         ^"
     },
     "84e0178b": {
       "ok": false,
@@ -430,6 +905,28 @@
       "stdout": "Ann\n",
       "panicked": false
     },
+    "8a4f8f70": {
+      "ok": false,
+      "errors": [
+        "E0072"
+      ],
+      "line": 1,
+      "rendered": "error[E0072]: recursive type `List` has infinite size\n --> src/main.rs:1:1\n  |\n1 | enum List {\n  | ^^^^^^^^^\n2 |     Cons(i32, [List; 1]),\n  |                ---- recursive without indirection\n  |\nhelp: insert some indirection (e.g., a `Box`, `Rc`, or `&`) to break the cycle\n  |\n2 |     Cons(i32, [Box<List>; 1]),\n  |                ++++    +"
+    },
+    "8a7eebf4": {
+      "ok": true,
+      "errors": [],
+      "stdout": "None\n",
+      "panicked": false
+    },
+    "8b2dcfb7": {
+      "ok": false,
+      "errors": [
+        "E0603"
+      ],
+      "line": 8,
+      "rendered": "error[E0603]: function `cook` is private\n --> src/main.rs:8:29\n  |\n8 |     println!(\"{}\", kitchen::cook());\n  |                             ^^^^ private function\n  |\nnote: the function `cook` is defined here\n --> src/main.rs:2:5\n  |\n2 |     pub(self) fn cook() -> &'static str {\n  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+    },
     "8f99a59b": {
       "ok": false,
       "errors": [
@@ -438,6 +935,27 @@
       "line": 3,
       "rendered": "error[E0507]: cannot move out of index of `Vec<String>`\n --> src/main.rs:3:17\n  |\n3 |     let first = names[0];\n  |                 ^^^^^^^^ move occurs because value has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider borrowing here\n  |\n3 |     let first = &names[0];\n  |                 +\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n3 |     let first = names[0].clone();\n  |                         ++++++++"
     },
+    "90f38eb3": {
+      "ok": false,
+      "errors": [
+        "E0451"
+      ],
+      "line": 17,
+      "rendered": "error[E0451]: field `balance` of struct `Account` is private\n  --> src/main.rs:17:9\n   |\n15 |     let a = bank::Account {\n   |             ------------- in this type\n16 |         owner: String::from(\"Ann\"),\n17 |         balance: 1_000_000,\n   |         ^^^^^^^ private field"
+    },
+    "90fabf91": {
+      "ok": true,
+      "errors": [],
+      "stdout": "[1, 2]\n",
+      "panicked": false
+    },
+    "91e75348": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:3:19:\nend byte index 1 is not a char boundary; it is inside 'é' (bytes 0..2 of string)\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
     "922387fa": {
       "ok": false,
       "errors": [
@@ -445,6 +963,32 @@
       ],
       "line": 14,
       "rendered": "error[E0038]: the trait `Shape` is not dyn compatible\n  --> src/main.rs:14:20\n   |\n14 |     let s: Box<dyn Shape> = Box::new(Square(2));\n   |                    ^^^^^ `Shape` is not dyn compatible\n   |\nnote: for a trait to be dyn compatible it needs to allow building a vtable\n      for more information, visit <https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility>\n  --> src/main.rs:2:25\n   |\n 1 | trait Shape {\n   |       ----- this trait is not dyn compatible...\n 2 |     fn double(&self) -> Self;\n   |                         ^^^^ ...because method `double` references the `Self` type in its return type\n   = help: consider moving `double` to another trait\n   = help: only type `Square` implements `Shape`; consider using it directly instead."
+    },
+    "9342e7f1": {
+      "ok": true,
+      "errors": [],
+      "stdout": "4\n",
+      "panicked": false
+    },
+    "969a75bd": {
+      "ok": false,
+      "errors": [
+        "E0133"
+      ],
+      "line": 4,
+      "rendered": "error[E0133]: dereference of raw pointer is unsafe and requires unsafe block\n --> src/main.rs:4:21\n  |\n4 |     println!(\"{}\", &*p);\n  |                     ^^ dereference of raw pointer\n  |\n  = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior"
+    },
+    "96e09477": {
+      "ok": true,
+      "errors": [],
+      "stdout": "hello Ferris\n",
+      "panicked": false
+    },
+    "976dbea1": {
+      "ok": true,
+      "errors": [],
+      "stdout": "5\n",
+      "panicked": false
     },
     "97eb7028": {
       "ok": false,
@@ -462,6 +1006,22 @@
       "line": 8,
       "rendered": "error[E0505]: cannot move out of `text` because it is borrowed\n --> src/main.rs:8:10\n  |\n6 |     let text = String::from(\"borrow checker\");\n  |         ---- binding `text` declared here\n7 |     let w = first_word(&text);\n  |                        ----- borrow of `text` occurs here\n8 |     drop(text);\n  |          ^^^^ move out of `text` occurs here\n9 |     println!(\"{w}\");\n  |                - borrow later used here\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n7 |     let w = first_word(&text.clone());\n  |                             ++++++++"
     },
+    "993c6354": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 2,
+      "rendered": "error[E0599]: no method named `ok` found for enum `Option<T>` in the current scope\n    --> src/main.rs:2:23\n     |\n   2 |     let x = v.first().ok()?;\n     |                       ^^\n     |\nhelp: there is a method `or` with a similar name, but with different arguments\n    --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:1618:5\n     |\n1618 | /     pub const fn or(self, optb: Option<T>) -> Option<T>\n1619 | |     where\n1620 | |         T: [const] Destruct,\n     | |____________________________^"
+    },
+    "99b36d86": {
+      "ok": false,
+      "errors": [
+        "E0106"
+      ],
+      "line": 2,
+      "rendered": "error[E0106]: missing lifetime specifier\n --> src/main.rs:2:15\n  |\n2 |     Cons(i32, &List),\n  |               ^ expected named lifetime parameter\n  |\nhelp: consider introducing a named lifetime parameter\n  |\n1 ~ enum List<'a> {\n2 ~     Cons(i32, &'a List),\n  |"
+    },
     "9c44b1f9": {
       "ok": true,
       "errors": [],
@@ -477,6 +1037,18 @@
       "line": 14,
       "rendered": "error[E0499]: cannot borrow `lx` as mutable more than once at a time\n  --> src/main.rs:14:5\n   |\n13 |     lx.skip();\n   |     -- first mutable borrow occurs here\n14 |     lx.skip();\n   |     ^^\n   |     |\n   |     second mutable borrow occurs here\n   |     first borrow later used here\n\nerror[E0502]: cannot borrow `lx.rest` as immutable because it is also borrowed as mutable\n  --> src/main.rs:15:20\n   |\n13 |     lx.skip();\n   |     -- mutable borrow occurs here\n14 |     lx.skip();\n15 |     println!(\"{}\", lx.rest);\n   |                    ^^^^^^^\n   |                    |\n   |                    immutable borrow occurs here\n   |                    mutable borrow later used here"
     },
+    "9d7f2350": {
+      "ok": true,
+      "errors": [],
+      "stdout": "9\n",
+      "panicked": false
+    },
+    "9d97262c": {
+      "ok": true,
+      "errors": [],
+      "stdout": "2\n",
+      "panicked": false
+    },
     "9ee7d1df": {
       "ok": false,
       "errors": [
@@ -485,6 +1057,28 @@
       "line": 7,
       "rendered": "error[E0515]: cannot return value referencing local variable `s`\n --> src/main.rs:7:5\n  |\n7 |     Excerpt { part: &s }\n  |     ^^^^^^^^^^^^^^^^--^^\n  |     |               |\n  |     |               `s` is borrowed here\n  |     returns a value referencing data owned by the current function"
     },
+    "9f1fe4ee": {
+      "ok": false,
+      "errors": [
+        "E0034"
+      ],
+      "line": 24,
+      "rendered": "error[E0034]: multiple applicable items in scope\n  --> src/main.rs:24:26\n   |\n24 |     println!(\"{}\", Human.fly());\n   |                          ^^^ multiple `fly` found\n   |\nnote: candidate #1 is defined in an impl of the trait `Pilot` for the type `Human`\n  --> src/main.rs:12:5\n   |\n12 |     fn fly(&self) -> &'static str {\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nnote: candidate #2 is defined in an impl of the trait `Wizard` for the type `Human`\n  --> src/main.rs:18:5\n   |\n18 |     fn fly(&self) -> &'static str {\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nhelp: disambiguate the method for candidate #1\n   |\n24 -     println!(\"{}\", Human.fly());\n24 +     println!(\"{}\", Pilot::fly(&Human));\n   |\nhelp: disambiguate the method for candidate #2\n   |\n24 -     println!(\"{}\", Human.fly());\n24 +     println!(\"{}\", Wizard::fly(&Human));\n   |"
+    },
+    "9f672163": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 12,
+      "rendered": "error[E0382]: borrow of moved value: `a.name`\n  --> src/main.rs:12:26\n   |\n11 |     let b = User { age: 31, ..a };\n   |             --------------------- value moved here\n12 |     println!(\"{} {} {}\", a.name, b.name, b.age);\n   |                          ^^^^^^ value borrowed here after move\n   |\n   = note: move occurs because `a.name` has type `String`, which does not implement the `Copy` trait"
+    },
+    "9fbe20bf": {
+      "ok": true,
+      "errors": [],
+      "stdout": "12 10\n",
+      "panicked": false
+    },
     "a3103ae4": {
       "ok": false,
       "errors": [
@@ -492,6 +1086,38 @@
       ],
       "line": 4,
       "rendered": "error[E0499]: cannot borrow `v` as mutable more than once at a time\n --> src/main.rs:4:5\n  |\n3 |     let first = &mut v[0];\n  |                      - first mutable borrow occurs here\n4 |     v.push(4);\n  |     ^ second mutable borrow occurs here\n5 |     println!(\"{first}\");\n  |                ----- first borrow later used here"
+    },
+    "a345ff6a": {
+      "ok": true,
+      "errors": [],
+      "stdout": "13\n",
+      "panicked": false
+    },
+    "a3fd2ed8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "3 3\n",
+      "panicked": false
+    },
+    "a40568ad": {
+      "ok": false,
+      "errors": [
+        "E0040"
+      ],
+      "line": 11,
+      "rendered": "error[E0040]: explicit use of destructor method\n  --> src/main.rs:11:7\n   |\n11 |     a.drop();\n   |       ^^^^ explicit destructor calls not allowed\n   |\nhelp: consider using `drop` function\n   |\n11 -     a.drop();\n11 +     drop(a);\n   |"
+    },
+    "a4322d58": {
+      "ok": true,
+      "errors": [],
+      "stdout": "7\n",
+      "panicked": false
+    },
+    "a46c2d5b": {
+      "ok": true,
+      "errors": [],
+      "stdout": "1 true\n",
+      "panicked": false
     },
     "a481beac": {
       "ok": false,
@@ -560,6 +1186,27 @@
       "stdout": "owned\n",
       "panicked": false
     },
+    "af92fd85": {
+      "ok": true,
+      "errors": [],
+      "stdout": "too small\n",
+      "panicked": false
+    },
+    "b04fe025": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 2,
+      "rendered": "error[E0277]: the `?` operator can only be applied to values that implement `Try`\n --> src/main.rs:2:13\n  |\n2 |     let x = v.first().unwrap()?;\n  |             ^^^^^^^^^^^^^^^^^^^ the `?` operator cannot be applied to type `&i32`\n  |\n  = help: the nightly-only, unstable trait `Try` is not implemented for `&i32`"
+    },
+    "b06717f8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:3:18:\nattempt to add with overflow\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
     "b1887456": {
       "ok": true,
       "errors": [],
@@ -572,10 +1219,38 @@
       "stdout": "[6, 4, 2]\n",
       "panicked": false
     },
+    "b533e947": {
+      "ok": false,
+      "errors": [
+        "missing type for `const` item"
+      ],
+      "line": 1,
+      "rendered": "error: missing type for `const` item\n --> src/main.rs:1:17\n  |\n1 | const MAX_POINTS = 100;\n  |                 ^ help: provide a type for the constant: `: i32`"
+    },
+    "b7c89e4d": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 5,
+      "rendered": "error[E0599]: no method named `clone` found for struct `std::sync::mpsc::Receiver<T>` in the current scope\n --> src/main.rs:5:18\n  |\n5 |     let rx2 = rx.clone();\n  |                  ^^^^^ method not found in `std::sync::mpsc::Receiver<_>`"
+    },
     "b97192a8": {
       "ok": true,
       "errors": [],
       "stdout": "2\n",
+      "panicked": false
+    },
+    "b9effb84": {
+      "ok": true,
+      "errors": [],
+      "stdout": "teen 15\n",
+      "panicked": false
+    },
+    "ba1d5899": {
+      "ok": true,
+      "errors": [],
+      "stdout": "3 2 1 ",
       "panicked": false
     },
     "ba75cad9": {
@@ -589,6 +1264,14 @@
       "errors": [],
       "stdout": "a hi b ",
       "panicked": false
+    },
+    "bd332bc3": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 3,
+      "rendered": "error[E0277]: the type `str` cannot be indexed by `{integer}`\n   --> src/main.rs:3:15\n    |\n  3 |     let c = s[0];\n    |               ^ string indices are ranges of `usize`\n    |\n    = help: the trait `SliceIndex<str>` is not implemented for `{integer}`\n    = note: you can use `.chars().nth()` or `.bytes().nth()`\n            for more information, see chapter 8 in The Book: <https://doc.rust-lang.org/book/ch08-02-strings.html#indexing-into-strings>\nhelp: `usize` implements trait `SliceIndex<T>`\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/slice/index.rs:214:1\n    |\n214 | unsafe impl<T> const SliceIndex<[T]> for usize {\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `SliceIndex<[T]>`\n    |\n   ::: ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/bstr/traits.rs:197:1\n    |\n197 | unsafe impl SliceIndex<ByteStr> for usize {\n    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `SliceIndex<ByteStr>`\n    = note: required for `String` to implement `Index<{integer}>`"
     },
     "bded541c": {
       "ok": true,
@@ -624,6 +1307,14 @@
       "stdout": "ferris\n",
       "panicked": false
     },
+    "c264e69a": {
+      "ok": false,
+      "errors": [
+        "E0282"
+      ],
+      "line": 2,
+      "rendered": "error[E0282]: type annotations needed\n --> src/main.rs:2:9\n  |\n2 |     let v = (1..4).map(|x| x * 2).collect();\n  |         ^\n3 |     println!(\"{}\", v.len());\n  |                    - type must be known at this point\n  |\nhelp: consider giving `v` an explicit type\n  |\n2 |     let v: Vec<_> = (1..4).map(|x| x * 2).collect();\n  |          ++++++++"
+    },
     "c272a41e": {
       "ok": false,
       "errors": [
@@ -631,6 +1322,14 @@
       ],
       "line": 17,
       "rendered": "error[E0599]: no associated function or constant named `area` found for struct `Square` in the current scope\n  --> src/main.rs:17:36\n   |\n 6 |     pub struct Square(pub u32);\n   |     ----------------- associated function or constant `area` not found for this struct\n...\n17 |     println!(\"{}\", shapes::Square::area(&s));\n   |                                    ^^^^ associated function or constant not found in `Square`\n   |\n   = help: items from traits can only be used if the trait is in scope\nhelp: trait `Area` which provides `area` is implemented but not in scope; perhaps you want to import it\n   |\n 1 + use crate::shapes::Area;\n   |"
+    },
+    "c500f9f8": {
+      "ok": false,
+      "errors": [
+        "E0425"
+      ],
+      "line": 7,
+      "rendered": "error[E0425]: cannot find function `helper` in this scope\n --> src/main.rs:7:20\n  |\n7 |     println!(\"{}\", helper());\n  |                    ^^^^^^ not found in this scope\n  |\nnote: found an item that was configured out\n --> src/main.rs:2:4\n  |\n1 | #[cfg(test)]\n  |       ---- the item is gated here\n2 | fn helper() -> i32 {\n  |    ^^^^^^"
     },
     "c5efaf2a": {
       "ok": true,
@@ -644,11 +1343,47 @@
       "stdout": "click beep ",
       "panicked": false
     },
+    "c878cfe8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "4\n",
+      "panicked": false
+    },
+    "c9449316": {
+      "ok": false,
+      "errors": [
+        "E0382"
+      ],
+      "line": 5,
+      "rendered": "error[E0382]: borrow of moved value: `a`\n --> src/main.rs:5:16\n  |\n2 |     let a = String::from(\"tic\");\n  |         - move occurs because `a` has type `String`, which does not implement the `Copy` trait\n3 |     let b = String::from(\"tac\");\n4 |     let c = a + &b;\n  |             - value moved here\n5 |     println!(\"{a} {c}\");\n  |                ^ value borrowed here after move\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n4 |     let c = a.clone() + &b;\n  |              ++++++++"
+    },
     "c95bb17f": {
       "ok": true,
       "errors": [],
       "stdout": "kelp\n",
       "panicked": false
+    },
+    "ca050d25": {
+      "ok": false,
+      "errors": [
+        "E0005"
+      ],
+      "line": 3,
+      "rendered": "error[E0005]: refutable pattern in local binding\n --> src/main.rs:3:9\n  |\n3 |     let Some(x) = maybe;\n  |         ^^^^^^^ pattern `None` not covered\n  |\n  = note: `let` bindings require an \"irrefutable pattern\", like a `struct` or an `enum` with only one variant\n  = note: for more information, visit https://doc.rust-lang.org/book/ch19-02-refutability.html\n  = note: the matched value is of type `Option<i32>`\nhelp: you might want to use `let...else` to handle the variant that isn't matched\n  |\n3 |     let Some(x) = maybe else { todo!() };\n  |                         ++++++++++++++++"
+    },
+    "ca3388fc": {
+      "ok": true,
+      "errors": [],
+      "stdout": "big\n",
+      "panicked": false
+    },
+    "ca708d3b": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 7,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:7:30\n  |\n7 |     let p = Point { x: 5, y: 4.0 };\n  |                              ^^^ expected integer, found floating-point number"
     },
     "ca82748a": {
       "ok": true,
@@ -680,6 +1415,20 @@
       "line": 16,
       "rendered": "error[E0599]: no method named `speak` found for struct `Rock` in the current scope\n  --> src/main.rs:16:25\n   |\n 6 | struct Rock;\n   | ----------- method `speak` not found for this struct\n...\n16 |     println!(\"{}\", Rock.speak());\n   |                         ^^^^^ method not found in `Rock`\n   |\n   = help: items from traits can only be used if the trait is implemented and in scope\nnote: `Speak` defines an item `speak`, perhaps you need to implement it\n  --> src/main.rs:1:1\n   |\n 1 | trait Speak {\n   | ^^^^^^^^^^^"
     },
+    "cd7a4aad": {
+      "ok": true,
+      "errors": [],
+      "stdout": "Err(\"empty\")\n",
+      "panicked": false
+    },
+    "d0acbcf4": {
+      "ok": false,
+      "errors": [
+        "E0369"
+      ],
+      "line": 4,
+      "rendered": "error[E0369]: cannot add `&String` to `&String`\n --> src/main.rs:4:16\n  |\n4 |     let c = &a + &b;\n  |             -- ^ -- &String\n  |             |  |\n  |             |  `+` cannot be used to concatenate two `&str` strings\n  |             &String\n  |\n  = note: string concatenation requires an owned `String` on the left\nhelp: remove the borrow to obtain an owned `String`\n  |\n4 -     let c = &a + &b;\n4 +     let c = a + &b;\n  |"
+    },
     "d0c06306": {
       "ok": false,
       "errors": [
@@ -688,10 +1437,38 @@
       "line": 4,
       "rendered": "error[E0502]: cannot borrow `v` as mutable because it is also borrowed as immutable\n --> src/main.rs:4:5\n  |\n3 |     let first = &v[0];\n  |                  - immutable borrow occurs here\n4 |     v.push(4);\n  |     ^^^^^^^^^ mutable borrow occurs here\n5 |     println!(\"{first}\");\n  |                ----- immutable borrow later used here"
     },
+    "d0d00b85": {
+      "ok": true,
+      "errors": [],
+      "stdout": "20\n",
+      "panicked": false
+    },
+    "d1c6e4de": {
+      "ok": false,
+      "errors": [
+        "E0507"
+      ],
+      "line": 5,
+      "rendered": "error[E0507]: cannot move out of an `Rc`\n --> src/main.rs:5:21\n  |\n5 |     let s: String = *a;\n  |                     ^^ move occurs because value has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider removing the dereference here\n  |\n5 -     let s: String = *a;\n5 +     let s: String = a;\n  |\nhelp: consider cloning the value if the performance cost is acceptable\n  |\n5 -     let s: String = *a;\n5 +     let s: String = a.clone();\n  |"
+    },
     "d1e4ffe5": {
       "ok": true,
       "errors": [],
       "stdout": "I live forever\n",
+      "panicked": false
+    },
+    "d3b920ed": {
+      "ok": false,
+      "errors": [
+        "E0373"
+      ],
+      "line": 2,
+      "rendered": "error[E0373]: closure may outlive the current function, but it borrows `n`, which is owned by the current function\n --> src/main.rs:2:5\n  |\n2 |     |x| x + &n\n  |     ^^^      - `n` is borrowed here\n  |     |\n  |     may outlive borrowed value `n`\n  |\nnote: closure is returned here\n --> src/main.rs:2:5\n  |\n2 |     |x| x + &n\n  |     ^^^^^^^^^^\nhelp: to force the closure to take ownership of `n` (and any other referenced variables), use the `move` keyword\n  |\n2 |     move |x| x + &n\n  |     ++++"
+    },
+    "d478a828": {
+      "ok": true,
+      "errors": [],
+      "stdout": "soup\n",
       "panicked": false
     },
     "d4893fa5": {
@@ -701,6 +1478,12 @@
       ],
       "line": 4,
       "rendered": "error[E0507]: cannot move out of `r` as enum variant `Some` which is behind a shared reference\n --> src/main.rs:4:11\n  |\n4 |     match *r {\n  |           ^^\n5 |         Some(s) => println!(\"{s}\"),\n  |              - data moved here because `s` has type `String`, which does not implement the `Copy` trait\n  |\nhelp: consider removing the dereference here\n  |\n4 -     match *r {\n4 +     match r {\n  |"
+    },
+    "d59da56e": {
+      "ok": true,
+      "errors": [],
+      "stdout": "30\n",
+      "panicked": false
     },
     "d6c5f01f": {
       "ok": true,
@@ -737,6 +1520,14 @@
       "stdout": "HELLO\n",
       "panicked": false
     },
+    "df5e691b": {
+      "ok": false,
+      "errors": [
+        "E0599"
+      ],
+      "line": 18,
+      "rendered": "error[E0599]: no method named `square` found for struct `Rect` in the current scope\n  --> src/main.rs:18:15\n   |\n 1 | struct Rect {\n   | ----------- method `square` not found for this struct\n...\n18 |     let s = r.square(2);\n   |               ^^^^^^ this is an associated function, not a method\n   |\n   = note: found the following associated functions; to be used as methods, functions must have a `self` parameter\nnote: the candidate is defined in an impl for the type `Rect`\n  --> src/main.rs:7:5\n   |\n 7 |     fn square(side: u32) -> Rect {\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nhelp: use associated function syntax instead\n   |\n18 -     let s = r.square(2);\n18 +     let s = Rect::square(2);\n   |"
+    },
     "e0f966c0": {
       "ok": false,
       "errors": [
@@ -744,6 +1535,36 @@
       ],
       "line": 4,
       "rendered": "error[E0502]: cannot borrow `s` as mutable because it is also borrowed as immutable\n --> src/main.rs:4:5\n  |\n3 |     let word = &s[..5];\n  |                 - immutable borrow occurs here\n4 |     s.clear();\n  |     ^^^^^^^^^ mutable borrow occurs here\n5 |     println!(\"{word}\");\n  |                ---- immutable borrow later used here"
+    },
+    "e11bf803": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 2,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:2:6\n  |\n2 |     |&x| x + n\n  |      ^^\n  |      |\n  |      expected `i32`, found `&_`\n  |      expected due to this\n  |\n  = note:   expected type `i32`\n          found reference `&_`\nhelp: consider removing `&` from the pattern\n  |\n2 -     |&x| x + n\n2 +     |x| x + n\n  |"
+    },
+    "e2128681": {
+      "ok": false,
+      "errors": [
+        "E0373"
+      ],
+      "line": 2,
+      "rendered": "error[E0373]: closure may outlive the current function, but it borrows `n`, which is owned by the current function\n --> src/main.rs:2:5\n  |\n2 |     |x| x + n\n  |     ^^^     - `n` is borrowed here\n  |     |\n  |     may outlive borrowed value `n`\n  |\nnote: closure is returned here\n --> src/main.rs:2:5\n  |\n2 |     |x| x + n\n  |     ^^^^^^^^^\nhelp: to force the closure to take ownership of `n` (and any other referenced variables), use the `move` keyword\n  |\n2 |     move |x| x + n\n  |     ++++"
+    },
+    "e25626cb": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 6,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:6:18\n  |\n6 |     let n: u32 = answer();\n  |            ---   ^^^^^^^^ expected `u32`, found future\n  |            |\n  |            expected due to this"
+    },
+    "e29830a9": {
+      "ok": true,
+      "errors": [],
+      "stdout": "start map map map 12\n",
+      "panicked": false
     },
     "e388f039": {
       "ok": true,
@@ -759,6 +1580,12 @@
       "line": 2,
       "rendered": "error[E0369]: binary operation `>` cannot be applied to type `T`\n --> src/main.rs:2:10\n  |\n2 |     if a > b { a } else { b }\n  |        - ^ - T\n  |        |\n  |        T\n  |\nhelp: consider restricting type parameter `T` with trait `PartialOrd`\n  |\n1 | fn largest<T: std::cmp::PartialOrd>(a: T, b: T) -> T {\n  |             ++++++++++++++++++++++"
     },
+    "e65b4ccf": {
+      "ok": true,
+      "errors": [],
+      "stdout": "red\n",
+      "panicked": false
+    },
     "e8c42dcc": {
       "ok": false,
       "errors": [
@@ -766,6 +1593,14 @@
       ],
       "line": 16,
       "rendered": "error: lifetime may not live long enough\n  --> src/main.rs:16:5\n   |\n15 | fn boxed(phrase: &str) -> Box<dyn Speak + 'static> {\n   |                  - let's call the lifetime of this reference `'1`\n16 |     Box::new(Parrot { phrase })\n   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ returning this value requires that `'1` must outlive `'static`\n   |\nhelp: consider changing the trait object's explicit `'static` bound to the lifetime of argument `phrase`\n   |\n15 - fn boxed(phrase: &str) -> Box<dyn Speak + 'static> {\n15 + fn boxed(phrase: &str) -> Box<dyn Speak + '_> {\n   |\nhelp: alternatively, add an explicit `'static` bound to this reference\n   |\n15 | fn boxed(phrase: &'static str) -> Box<dyn Speak + 'static> {\n   |                   +++++++"
+    },
+    "eb7b5cc2": {
+      "ok": false,
+      "errors": [
+        "E0596"
+      ],
+      "line": 4,
+      "rendered": "error[E0596]: cannot borrow `it` as mutable, as it is not declared as mutable\n --> src/main.rs:4:22\n  |\n4 |     println!(\"{:?}\", it.next());\n  |                      ^^ cannot borrow as mutable\n  |\nhelp: consider changing this to be mutable\n  |\n3 |     let mut it = v.iter();\n  |         +++"
     },
     "ec21b30c": {
       "ok": true,
@@ -781,16 +1616,108 @@
       "line": 1,
       "rendered": "error[E0106]: missing lifetime specifier\n --> src/main.rs:1:33\n  |\n1 | fn longest(a: &str, b: &str) -> &str {\n  |               ----     ----     ^ expected named lifetime parameter\n  |\n  = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `a` or `b`\nhelp: consider introducing a named lifetime parameter\n  |\n1 | fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {\n  |           ++++     ++          ++          ++"
     },
+    "ef4aea5d": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 2,
+      "rendered": "error[E0277]: the `?` operator can only be used in a function that returns `Result` or `Option` (or another type that implements `FromResidual`)\n --> src/main.rs:2:30\n  |\n1 | fn main() {\n  | --------- this function should return `Result` or `Option` to accept `?`\n2 |     let n: i32 = \"42\".parse()?;\n  |                              ^ cannot use the `?` operator in a function that returns `()`\n  |\nhelp: consider adding return type\n  |\n1 ~ fn main() -> Result<(), Box<dyn std::error::Error>> {\n2 |     let n: i32 = \"42\".parse()?;\n3 |     println!(\"{n}\");\n4 +     Ok(())\n  |"
+    },
+    "efa0b817": {
+      "ok": true,
+      "errors": [],
+      "stdout": "42\n",
+      "panicked": false
+    },
+    "f350b8e8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "25 50\n",
+      "panicked": false
+    },
+    "f357fdcc": {
+      "ok": true,
+      "errors": [],
+      "stdout": "o?\n",
+      "panicked": false
+    },
+    "f3ebe36c": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 4,
+      "rendered": "error[E0277]: can't compare `{integer}` with `Box<{integer}>`\n --> src/main.rs:4:18\n  |\n4 |     let same = 5 == y;\n  |                  ^^ no implementation for `{integer} == Box<{integer}>`\n  |\n  = help: the trait `PartialEq<Box<{integer}>>` is not implemented for `{integer}`\nhelp: consider dereferencing here\n  |\n4 |     let same = 5 == *y;\n  |                     +"
+    },
+    "f49e5687": {
+      "ok": true,
+      "errors": [],
+      "stdout": "",
+      "stderr": "thread 'main' panicked at src/main.rs:6:5:\nassertion `left == right` failed\n  left: 0\n right: 4\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+      "panicked": true
+    },
+    "f549f531": {
+      "ok": false,
+      "errors": [
+        "E0596"
+      ],
+      "line": 5,
+      "rendered": "error[E0596]: cannot borrow data in an `Rc` as mutable\n --> src/main.rs:5:5\n  |\n5 |     a.push(2);\n  |     ^ cannot borrow as mutable\n  |\n  = help: trait `DerefMut` is required to modify through a dereference, but it is not implemented for `Rc<Vec<i32>>`"
+    },
+    "f57ff9b2": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 3,
+      "rendered": "error[E0308]: `if` and `else` have incompatible types\n --> src/main.rs:3:35\n  |\n3 |     let n = if lucky { 5 } else { \"six\" };\n  |                        -          ^^^^^ expected integer, found `&str`\n  |                        |\n  |                        expected because of this"
+    },
+    "f6791631": {
+      "ok": true,
+      "errors": [],
+      "stdout": "6\n",
+      "panicked": false
+    },
     "f9449ac0": {
       "ok": true,
       "errors": [],
       "stdout": "4 3\n",
       "panicked": false
     },
+    "f9977eb8": {
+      "ok": true,
+      "errors": [],
+      "stdout": "6 5\n",
+      "panicked": false
+    },
+    "f9ba7f9f": {
+      "ok": false,
+      "errors": [
+        "E0308"
+      ],
+      "line": 1,
+      "rendered": "error[E0308]: mismatched types\n --> src/main.rs:1:24\n  |\n1 | fn plus_one(x: i32) -> i32 {\n  |    --------            ^^^ expected `i32`, found `()`\n  |    |\n  |    implicitly returns `()` as its body has no tail or `return` expression\n2 |     x + 1;;\n  |          - help: remove this semicolon to return this value"
+    },
+    "fb9f3252": {
+      "ok": false,
+      "errors": [
+        "E0277",
+        "E0277"
+      ],
+      "line": 11,
+      "rendered": "error[E0277]: `Point` doesn't implement `std::fmt::Display`\n  --> src/main.rs:11:16\n   |\n11 | impl Label for Point {}\n   |                ^^^^^ unsatisfied trait bound\n   |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n  --> src/main.rs:9:1\n   |\n 9 | struct Point(i32);\n   | ^^^^^^^^^^^^\nnote: required by a bound in `Label`\n  --> src/main.rs:3:14\n   |\n 3 | trait Label: Display {\n   |              ^^^^^^^ required by this bound in `Label`\n\nerror[E0277]: `Point` doesn't implement `std::fmt::Display`\n  --> src/main.rs:14:29\n   |\n14 |     println!(\"{}\", Point(3).label());\n   |                             ^^^^^ unsatisfied trait bound\n   |\nhelp: the trait `std::fmt::Display` is not implemented for `Point`\n  --> src/main.rs:9:1\n   |\n 9 | struct Point(i32);\n   | ^^^^^^^^^^^^\nnote: required by a bound in `Label::label`\n  --> src/main.rs:3:14\n   |\n 3 | trait Label: Display {\n   |              ^^^^^^^ required by this bound in `Label::label`\n 4 |     fn label(&self) -> String {\n   |        ----- required by a bound in this associated function"
+    },
     "fd58723f": {
       "ok": true,
       "errors": [],
       "stdout": "100 2\n",
+      "panicked": false
+    },
+    "fe00072e": {
+      "ok": true,
+      "errors": [],
+      "stdout": "a end b ",
       "panicked": false
     },
     "fe8edd1b": {
@@ -800,6 +1727,14 @@
       ],
       "line": 3,
       "rendered": "error[E0117]: only traits defined in the current crate can be implemented for types defined outside of the crate\n --> src/main.rs:3:1\n  |\n3 | impl fmt::Display for Vec<u32> {\n  | ^^^^^^^^^^^^^^^^^^^^^^--------\n  |                       |\n  |                       `Vec` is not defined in the current crate\n  |\n  = note: impl doesn't have any local type before any uncovered type parameters\n  = note: for more information see https://doc.rust-lang.org/reference/items/implementations.html#orphan-rules\n  = note: define and implement a trait or new type instead"
+    },
+    "ff1ddeb4": {
+      "ok": false,
+      "errors": [
+        "E0277"
+      ],
+      "line": 4,
+      "rendered": "error[E0277]: cannot add `Option<i32>` to `i32`\n   --> src/main.rs:4:22\n    |\n  4 |     println!(\"{}\", x + y);\n    |                      ^ no implementation for `i32 + Option<i32>`\n    |\n    = help: the trait `Add<Option<i32>>` is not implemented for `i32`\nhelp: the following other types implement trait `Add<Rhs>`\n   --> ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/ops/arith.rs:98:9\n    |\n 98 |         impl const Add for $t {\n    |         ^^^^^^^^^^^^^^^^^^^^^ `i32` implements `Add`\n...\n113 | add_impl! { usize u8 u16 u32 u64 u128 isize i8 i16 i32 i64 i128 f16 f32 f64 f128 }\n    | ---------------------------------------------------------------------------------- in this macro invocation\n    |\n   ::: ~/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/internal_macros.rs:22:9\n    |\n 22 |         impl const $imp<$u> for &$t {\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `&i32` implements `Add<i32>`\n...\n 33 |         impl const $imp<&$u> for $t {\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `i32` implements `Add<&i32>`\n...\n 44 |         impl const $imp<&$u> for &$t {\n    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `&i32` implements `Add`\n    = note: this error originates in the macro `add_impl` (in Nightly builds, run with -Z macro-backtrace for more info)"
     }
   }
 }
