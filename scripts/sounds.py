@@ -5,16 +5,19 @@ SoundCraft is driven through its localhost control server, so the sounds are
 made from its built-in synths and effects and can be rebuilt or tweaked here.
 
     /Applications/SoundCraft.app/Contents/MacOS/SoundCraft --control 47123 &
-    python3 scripts/sounds.py          # from games/be-the-borrow-checker
+    python3 scripts/sounds.py          # from the repository root
 
-Needs `lame` for the MP3s (brew install lame). SOUNDCRAFT_CONTROL_PORT picks
+Needs `lame` for the MP3s (brew install lame), and for the combo sound macOS's `afconvert`
+and Ableton Live's Core Library (see FLUGELHORN below). SOUNDCRAFT_CONTROL_PORT picks
 another port. Opens a new, unsaved session in SoundCraft.
 """
+import array
 import json
 import os
 import socket
 import subprocess
 import tempfile
+import wave
 
 PORT = int(os.environ.get("SOUNDCRAFT_CONTROL_PORT", "47123"))
 RATE = 48000
@@ -104,15 +107,65 @@ def click(at):
     return 0.12
 
 
+# The combo sound is not synthesized: it is one recorded flugelhorn note from the library that ships with
+# Ableton Live, played three times. The recording is read from the local Live install and is not part of this
+# repository. FLUGELHORN picks another copy.
+FLUGELHORN = os.environ.get(
+    "FLUGELHORN",
+    "/Applications/Ableton Live 12 Trial.app/Contents/App-Resources/Core Library/Samples/One Shots/Instrument/Brass/Flugelhorn A#.wav")
+PAM_GAP = 0.2  # seconds between the three hits
+PAM_STEPS = [(-4, 0.17, 0.75), (0, 0.17, 0.85), (3, 0.75, 1.0)]  # (semitones, seconds kept, loudness): root, third, fifth
+
+
+def pam(note_wav, out_wav, seconds=1.6):
+    """Writes "pam pam pam": the note three times, each a step higher, the first two cut short and the last ringing out."""
+    with wave.open(note_wav) as w:
+        samples = array.array("h", w.readframes(w.getnframes()))
+    note = [[v / 32768 for v in samples[c::2]] for c in (0, 1)]
+    # Start exactly at the attack.
+    peak = max(max(map(abs, note[0])), max(map(abs, note[1])))
+    first = next(i for i in range(len(note[0])) if abs(note[0][i]) > 0.02 * peak or abs(note[1][i]) > 0.02 * peak)
+    note = [channel[max(first - 48, 0):] for channel in note]
+    n = int(seconds * RATE)
+    mix = [[0.0] * n, [0.0] * n]
+    for i, (semitones, keep, loud) in enumerate(PAM_STEPS):
+        rate, start = 2 ** (semitones / 12), int(i * PAM_GAP * RATE)  # faster playback is higher
+        length = min(int(keep * RATE), n - start)
+        fade = int((0.03 if keep < 0.3 else 0.25) * RATE)
+        for c in (0, 1):
+            src = note[c]
+            for j in range(length):
+                pos = j * rate
+                k = int(pos)
+                if k + 1 >= len(src):
+                    break
+                v = src[k] + (src[k + 1] - src[k]) * (pos - k)
+                if j > length - fade:
+                    v *= (length - j) / fade
+                mix[c][start + j] += v * loud
+    scale = 0.89 / max(max(map(abs, mix[0])), max(map(abs, mix[1])))
+    data = array.array("h")
+    for left, right in zip(*mix):
+        data.append(int(32767 * left * scale))
+        data.append(int(32767 * right * scale))
+    with wave.open(out_wav, "wb") as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(RATE)
+        w.writeframes(data.tobytes())
+
+
 def combo(at):
-    """Every third right answer in a row: a power-up sweep as the multiplier climbs."""
-    t = instrument("combo", "subtractive_synth",
-                   dict(osc1_wave="Saw", osc2_wave="Square", osc2_semitones=12, osc2_detune=6, osc_mix=40, cutoff=700, resonance=45,
-                        filter_env_amount=70, filter_attack=5, filter_decay=180, filter_sustain=20, filter_release=200,
-                        amp_attack=2, amp_decay=150, amp_sustain=50, amp_release=160, glide=35, velocity=40, level=-14),
-                   [("chorus", dict(rate=0.8, depth=40, delay=12, feedback=10, mix=35, spread=90)), PLATE])
-    notes(t, at, [(67, 0, 55, 100), (72, 55, 55, 105), (76, 110, 55, 110), (79, 165, 55, 115), (84, 220, 260, 120)])
-    return 1.3
+    """Every third right answer in a row: pam pam pam, three rising flugelhorn notes as the multiplier climbs."""
+    if not os.path.exists(FLUGELHORN):
+        raise SystemExit(f"combo needs the flugelhorn recording from Ableton Live's Core Library, not found at {FLUGELHORN}")
+    tmp = tempfile.mkdtemp()
+    note, phrase = os.path.join(tmp, "flugelhorn.wav"), os.path.join(tmp, "combo.wav")
+    subprocess.run(["afconvert", "-f", "WAVE", "-d", f"LEI16@{RATE}", "-c", "2", FLUGELHORN, note], check=True)
+    pam(note, phrase)
+    track = command("file.import_audio", path=phrase, at=at)["imported"][0]["track"]
+    command("track.rename", track=track, name="combo")
+    return 1.25
 
 
 def fanfare(at):

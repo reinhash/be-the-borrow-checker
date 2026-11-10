@@ -872,7 +872,7 @@ h1 em {
 }
 
 .stamp-btn:hover {
-  transform: rotate(-3deg) scale(1.03);
+  transform: translateY(-1px);
 }
 
 .stamp-btn.accept:hover {
@@ -884,7 +884,7 @@ h1 em {
 }
 
 .stamp-btn:active {
-  transform: scale(0.96);
+  transform: translateY(1px);
 }
 
 .choices {
