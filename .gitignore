@@ -2,3 +2,5 @@ node_modules/
 dist/
 .DS_Store
 __pycache__/
+# local sound generation, not part of the public repository
+scripts/sounds.py
